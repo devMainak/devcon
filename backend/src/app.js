@@ -36,8 +36,8 @@ const readAllPosts = async () => {
     }
 }
 
-// GET method on '/' route to fetch posts
-app.get('/', async (req, res) => {
+// GET method on '/posts' route to fetch posts
+app.get('/posts', async (req, res) => {
     try {
         const posts = await readAllPosts()
         if (posts)
@@ -55,6 +55,35 @@ app.get('/', async (req, res) => {
     }
 })
 
+// Function to read post by Id
+const readPostById = async (postId) => {
+    try {
+        const postById = await Post.findById(postId)
+        return postById
+    } catch (error) {
+        throw error
+    }
+}
+
+// GET method on '/posts/:postId' route
+app.get('/posts/:postId', async (req, res) => {
+    const postId = req.params.postId
+    try {
+        const post = await readPostById(postId)
+        if (post) {
+            res.status(200)
+            .json({post: post})
+        } else {
+            res.status(404)
+            .json({message: "No such post found."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to load post."})
+    }
+})
+
 // Function create new post in DB
 const savePost = async (post) => {
     try {
@@ -67,7 +96,7 @@ const savePost = async (post) => {
 }
 
 // POST method on '/' to save post
-app.post('/', async (req, res) => {
+app.post('/user/post', async (req, res) => {
     const post = req.body
     try {
         const savedPost = await savePost(post)
@@ -86,21 +115,21 @@ app.post('/', async (req, res) => {
 })
 
 // Function to update post by Id from db
-const updatePostById = async (postId, newContent) => {
+const updatePostById = async (postId, post) => {
     try {
-        const updatedPost = await Post.findOneAndUpdate({_id: postId}, {content: newContent}, {new: true})
+        const updatedPost = await Post.findByIdAndUpdate(postId, post, {new: true})
         return updatedPost
     } catch (error) {
         throw error
     }
 }
 
-app.put('/:postId', async (req, res) => {
+app.post('/posts/edit/:postId', async (req, res) => {
     const postId = req.params.postId
-    const newContent = req.body.content
+    const post = req.body
     
     try {
-        const updatedPost = await updatePostById(postId, newContent)
+        const updatedPost = await updatePostById(postId, post)
         if (updatedPost) {
             res.status(200)
             .json({message: "Updated post successfully.", updatedPost: updatedPost})
@@ -126,7 +155,7 @@ const deletePostById = async (postId) => {
 }
 
 // DELETE method on '/:postId' route
-app.delete('/:postId', async (req, res) => {
+app.delete('/user/posts/:postId', async (req, res) => {
     const postId = req.params.postId
     try {
         const deletedBook = await deletePostById(postId)

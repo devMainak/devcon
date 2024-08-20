@@ -6,7 +6,6 @@ require('dotenv').config()
 const http = require('http')
 // Import the Express app
 const app = require('./src/app')
-const { error } = require('console')
 // Use the port from .env or default to 3000
 const PORT = process.env.PORT || 3000
 
