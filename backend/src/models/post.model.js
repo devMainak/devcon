@@ -17,7 +17,7 @@ const postSchema = new mongoose.Schema({
     content: {
         type: String,
         trim: true,
-        maxlength: 50
+        maxlength: 100
     },
     likes: {
         type: Number,
@@ -31,13 +31,7 @@ const postSchema = new mongoose.Schema({
     ],
     media: [
         {
-            url: {
-                type: String,
-            },
-            type: {
-                type: String,
-                enum: ['image', 'video', 'audio']
-            }
+            type: String,
         }
     ]
 }, { timestamps: true })
