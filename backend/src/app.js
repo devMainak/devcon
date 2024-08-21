@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 // Data models
 const Post = require('./models/post.model')
+const User = require('./models/user.model')
 
 // Function to initialize database connection
 const initializeDatabase = require('./config/db.connection')
@@ -173,4 +174,5 @@ app.delete('/user/posts/:postId', async (req, res) => {
     }
 })
 
+// Exporting the app module 
 module.exports = app

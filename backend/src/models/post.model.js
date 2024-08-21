@@ -37,7 +37,7 @@ const postSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 // Creating the model for post
-const Post = mongoose.model('Post', postSchema)
+const Post = mongoose.model('Posts', postSchema)
 
 // Exporting the Post model
 module.exports = Post
