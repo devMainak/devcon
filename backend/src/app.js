@@ -174,5 +174,124 @@ app.delete('/user/posts/:postId', async (req, res) => {
     }
 })
 
+// Function to get all users
+const readAllUsers = async () => {
+    try {
+        const users = await User.find()
+        return users
+    } catch (error) {
+        throw new Error(error)
+    } 
+}
+
+// GET method on '/users' to fetch all the users
+app.get('/users', async (req, res) => {
+    try {
+        const users = await readAllUsers()
+        if (users.length > 0)
+        {
+            res.status(200)
+            .json({message: "Users fetched successfully.", users: users})
+        } else {
+            res.status(404)
+            .json({message: "No user found."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to fetch users."})
+    }
+})
+
+// Function to seed new user in DB
+const saveNewUser = async (user) => {
+    try {
+        const newUser = new User(user)
+        const savedUser = await newUser.save()
+        return savedUser
+    } catch (error) {
+        throw error
+    }
+}
+
+// POST method on '/users/user' to save new user
+app.post('/users/user', async (req, res) => {
+    const newUser = req.body
+    try {
+        const savedUser = await saveNewUser(newUser)
+        if (savedUser) {
+            res.status(201)
+            .json({message: "User added successfully.", savedUser: savedUser})
+        } else {
+            res.status(400)
+            .json({message: "Failed to add user."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to save user."})
+    }
+})
+
+// Function to follow user in DB
+const updateUserBeingFollowed = async (userId) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate({_id: userId}, {isFollowed: true}, {new: true})
+        return updatedUser
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+// POST method on '/users/follow/:userId' to follow user
+app.post('/users/follow/:userId', async (req, res) => {
+    const userId = req.params.userId
+    try {
+        const updatedUser = await updateUserBeingFollowed(userId)
+        if (updatedUser) {
+            res.status(200)
+            .json({message: `Followed ${updatedUser.name}.`, updatedUser: updatedUser})
+        } else {
+            res.status(400)
+            .json({message: "Failed to complete the follow request."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to complete the follow request."})
+    }
+})
+
+// Function to unfollow user in DB
+const updateUserBeingUnfollowed = async (userId) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate({_id: userId}, {isFollowed: false}, {new: true})
+        return updatedUser
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+// POST method on '/users/follow/:userId' to follow user
+app.post('/users/unfollow/:userId', async (req, res) => {
+    const userId = req.params.userId
+    try {
+        const updatedUser = await updateUserBeingUnfollowed(userId)
+        if (updatedUser) {
+            res.status(200)
+            .json({message: `Unfollowed ${updatedUser.name}.`, updatedUser: updatedUser})
+        } else {
+            res.status(400)
+            .json({message: "Failed to complete the unfollow request."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to complete the unfollow request."})
+    }
+})
+
+
+
 // Exporting the app module 
 module.exports = app
