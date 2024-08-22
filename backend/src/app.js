@@ -145,6 +145,68 @@ app.post('/posts/edit/:postId', async (req, res) => {
     }
 })
 
+// Function to like a post
+const likeAPost = async (postId, post) => {
+    try {
+        const likedPost = await Posts.findByIdAndUpdate(postId, {...post, likes: post.likes + 1}, {new: true})
+        return likedPost
+    } catch (error) {
+        throw error
+    }
+}
+
+// POST method on '/posts/like/:postId' to like a post
+app.post('/posts/like/:postId', async (req, res) => {
+    const postId = req.params.postId
+    const post = req.body
+    try {
+        const likedPost = await likeAPost(postId, post)
+        if (likedPost)
+        {
+            res.status(200)
+            .json({message: "Liked post.", likedPost: likedPost})
+        } else {
+            res.status(400)
+            .json({message: "Failed to like post."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to like the post."})
+    }
+})
+
+// Function to like a post
+const dislikeAPost = async (postId, post) => {
+    try {
+        const dislikedPost = await Posts.findByIdAndUpdate(postId, {...post, likes: post.likes - 1}, {new: true})
+        return dislikedPost
+    } catch (error) {
+        throw error
+    }
+}
+
+// POST method on '/posts/like/:postId' to like a post
+app.post('/posts/dislike/:postId', async (req, res) => {
+    const postId = req.params.postId
+    const post = req.body
+    try {
+        const dislikedPost = await dislikeAPost(postId, post)
+        if (dislikedPost)
+        {
+            res.status(200)
+            .json({message: "disliked post.", dislikedPost: dislikedPost})
+        } else {
+            res.status(400)
+            .json({message: "Failed to dislike post."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to like the post."})
+    }
+})
+
 // Function to delete post by Id from DB
 const deletePostById = async (postId) => {
     try {
