@@ -155,17 +155,17 @@ const deletePostById = async (postId) => {
     }
 }
 
-// DELETE method on '/:postId' route
+// DELETE method on '/user/posts/:postId' route
 app.delete('/user/posts/:postId', async (req, res) => {
     const postId = req.params.postId
     try {
-        const deletedBook = await deletePostById(postId)
-        if (deletedBook) {
+        const deletedPost = await deletePostById(postId)
+        if (deletedPost) {
             res.status(200)
-            .json({message: "Post deleted successfully.", deletedBook: deletedBook})
+            .json({message: "Post deleted successfully.", deletedPost: deletedPost})
         } else {
             res.status(400)
-            .json({error: "Failed to delete post. "})
+            .json({error: "Failed to delete post."})
         }
     } catch (error) {
         console.error(error)
