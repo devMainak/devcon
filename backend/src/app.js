@@ -148,7 +148,7 @@ app.post('/posts/edit/:postId', async (req, res) => {
 // Function to like a post
 const likeAPost = async (postId, post) => {
     try {
-        const likedPost = await Posts.findByIdAndUpdate(postId, {...post, likes: post.likes + 1}, {new: true})
+        const likedPost = await Post.findByIdAndUpdate(postId, {...post, likes: post.likes + 1}, {new: true})
         return likedPost
     } catch (error) {
         throw error
@@ -179,7 +179,7 @@ app.post('/posts/like/:postId', async (req, res) => {
 // Function to like a post
 const dislikeAPost = async (postId, post) => {
     try {
-        const dislikedPost = await Posts.findByIdAndUpdate(postId, {...post, likes: post.likes - 1}, {new: true})
+        const dislikedPost = await Post.findByIdAndUpdate(postId, {...post, likes: post.likes - 1}, {new: true})
         return dislikedPost
     } catch (error) {
         throw error

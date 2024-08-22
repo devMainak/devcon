@@ -19,6 +19,18 @@ export const updatePostAsync = createAsyncThunk('update/post', async ({postId, p
     return response.data
 })
 
+// Async function to like a post
+export const likePostAsync = createAsyncThunk('like/post', async ({postId, post}) => {
+    const response = await axios.post(`http://localhost:3000/posts/like/${postId}`, post)
+    return response.data
+})
+
+// Async function to dislike a post
+export const dislikePostAsync = createAsyncThunk('dislike/post', async ({postId, post}) => {
+    const response = await axios.post(`http://localhost:3000/posts/dislike/${postId}`, post)
+    return response.data
+})
+
 // Async function to delete post
 export const deletePostAsync = createAsyncThunk('delete/post', async (postId) => {
     const response = await axios.delete(`http://localhost:3000/user/posts/${postId}`)
@@ -60,6 +72,14 @@ export const postsSlice = createSlice({
         // Success case for deletePostAsync
         builder.addCase(deletePostAsync.fulfilled, (state, action) => {
             state.posts = state.posts.filter(post => post._id !== action.payload.deletedPost._id)
+        })
+        // Success case for likePostAsync
+        builder.addCase(likePostAsync.fulfilled, (state, action) => {
+            state.posts = state.posts.map(post => post._id === action.payload.likedPost._id ? action.payload.likedPost : post)
+        })
+        // Success case for dislikePostAsync
+        builder.addCase(dislikePostAsync.fulfilled, (state, action) => {
+            state.posts = state.posts.map(post => post._id === action.payload.dislikedPost._id ? action.payload.dislikedPost : post)
         })
     }
 })
