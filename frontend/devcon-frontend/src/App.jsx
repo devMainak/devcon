@@ -1,12 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Header from './components/Header'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import Feed from './features/posts/feed'
 
 function App() {
   
 
   return (
     <>
-      <Header/>
+      <Feed/>
     </>
   )
 }

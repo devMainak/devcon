@@ -5,15 +5,10 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import store, { persistor } from './app/store.js'
 import 'bootstrap/dist/js/bootstrap.min.js'
-import App from './App.jsx'
+import routes from './routes.jsx'
 
 // Routes and elements for the router
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App/>
-  }
-])
+const router = createBrowserRouter(routes)
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
