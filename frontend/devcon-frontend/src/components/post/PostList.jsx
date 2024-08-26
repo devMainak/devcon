@@ -1,9 +1,11 @@
 import { useDispatch } from "react-redux"
 import { dislikePostAsync, likePostAsync } from "../../features/posts/postsSlice"
 
+
 const PostList = ({posts}) => {
     // Configuring useDispatch for usage
     const dispatch = useDispatch()
+
 
     // Function handle liking or disliking a post a post
     const handleLiking = (post) => {
@@ -26,6 +28,7 @@ const PostList = ({posts}) => {
         })
     }
 
+
     return (
         <div>
         {posts.map(post => (
@@ -33,7 +36,7 @@ const PostList = ({posts}) => {
             <div className="card-body">
                 <div className="d-flex">
                     <div>
-                        <img src={post.author.userImageUrl} style={{ height: '40px', borderRadius: "45%" }}/>
+                        <img src={post.author.userImageUrl} style={{ height: '40px', width: '40px', borderRadius: '50%' }}/>
                     </div>
                     <div>
                         <div className="fw-semibold" style={{fontSize: "large", paddingLeft: "10px", paddingRight: "5px"}}>{post.author.name} <span className="text-primary fw-normal" style={{fontSize: "large"}}>@mrrobot</span></div>

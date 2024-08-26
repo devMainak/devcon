@@ -3,18 +3,20 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage
 import { persistStore, persistReducer } from 'redux-persist'
 import { postsSlice } from '../features/posts/postsSlice'
 import { usersSlice } from '../features/users/usersSlice'
+import { staticUserSlice } from '../components/user/staticUserSlice'
 
 // Defining persist config
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['posts', 'users']
+    whitelist: ['posts', 'users', 'staticUser']
 }
 
 // Combining reducers
 const rootReducer = combineReducers({
     posts: postsSlice.reducer,
-    users: usersSlice.reducer
+    users: usersSlice.reducer,
+    staticUser: staticUserSlice.reducer 
 })
 
 // Creating persisted reducer

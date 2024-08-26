@@ -43,9 +43,20 @@ export const postsSlice = createSlice({
     initialState: {
         posts: [],
         status: "idle",
-        error: null
+        error: null,
+        sortByLike: "Most Liked",
+        sortByDate: ""
     },
-    reducers: {},
+    reducers: {
+        // For handling sort by date
+        handleSortByLikes: (state, action) => {
+            state.sortByLike = state.sortByLike === "Most Liked" ? "All Posts" : "Most Liked"
+        },
+        // For handling sort by date
+        handleSortByDate: (state, action) => {
+            state.sortByDate = action.payload
+        }
+    },
     extraReducers: (builder) => {
         // Pending case for fetchPostsAsync
         builder.addCase(fetchPostsAsync.pending, (state) => {
@@ -83,6 +94,9 @@ export const postsSlice = createSlice({
         })
     }
 })
+
+// Exporting the action creators
+export const { handleSortByLikes, handleSortByDate } = postsSlice.actions
 
 // exporting the reducer for the store
 export default postsSlice.reducer
