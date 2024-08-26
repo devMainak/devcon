@@ -34,6 +34,15 @@ const Feed = () => {
                         <SideNav/>
                     </div>
                     <div style={{flex: "2 1 40vw"}}>
+                            <h5 className="display-5 fw-semibold">Your Feed</h5> 
+                                <div className="d-flex pb-3" style={{gap: "10px"}}>
+                                    <button className="btn btn-light text-primary">Most Liked</button>
+                                    <select className="form-select text-primary" style={{maxWidth: "1.5in", minWidth: "1.5in"}}>
+                                        <option value="">Sort by date</option>
+                                        <option>Recent Posts</option>
+                                        <option>Old Posts</option>
+                                    </select>
+                                </div>
                         <PostList posts={posts} />
                     </div>
                     <div style={{flex: "1 1 25vw"}}>
