@@ -43,8 +43,24 @@ const PostList = ({posts}) => {
                         <div className="card-text" style={{paddingLeft: "10px"}}>{formatDate(post.createdAt)}</div>
                     </div>     
                 </div>
-                <div className="fs-5 pt-3" style={{paddingLeft: "3.4rem", paddingRight: "3.4rem"}}>{post.content}</div>
-                <div className="d-flex justify-content-between pt-3" style={{paddingLeft: "3.1rem", paddingRight: "3.1rem"}}>
+                <div className="fs-5 pt-3" >{post.content}</div>
+                {post.media.length > 0 && 
+                    post.media.map((media, index) => {
+                        if (media.type === "image") {
+                            return (<div className="pt-3">
+                                <img key={index} className="img-fluid" src={post.media[0].url} alt="Post Media" style={{maxHeight: "380px", maxWidth: "100%"}}/>
+                            </div>)
+                        } else if (media.type === "video") {
+                            return (<div className="pt-3">
+                                <video key={index} controls style={{maxHeight: "380px", maxWidth: "100%"}}>
+                                    <source src={media.url} type="video/mp4"/>
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>)
+                        }
+                    })
+                }
+                <div className="d-flex justify-content-between pt-3">
                     <div>
                         <button className="btn text-primary" onClick={() => handleLiking(post)}><i className={post.likes > 0 ? "fa-sharp fa-solid fa-heart fs-4" : "fa-sharp fa-regular fa-heart fs-4"}></i>{post.likes > 0 ? `${post.likes}` : ``}</button>
                     </div>
