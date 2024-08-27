@@ -99,13 +99,13 @@ const PostList = ({posts}) => {
                         </div>
                     </div>
                 ) : (
-                    <div className="fs-5 pt-3" >{post.content}</div>
+                    <div className="fs-5 pt-3 px-4">{post.content}</div>
                 )}
                 {post.media.length > 0 && 
                     post.media.map((media, index) => {
                         if (media.type === "image") {
                             return (<div className="pt-3">
-                                <img key={index} className="img-fluid" src={post.media[0].url} alt="Post Media" style={{maxHeight: "380px", maxWidth: "100%"}}/>
+                                <img key={index} className="img-fluid" src={post.media[0].url} alt="Post Media" style={{maxHeight: "380px", width: "100%"}}/>
                             </div>)
                         } else if (media.type === "video") {
                             return (<div className="pt-3">
@@ -117,7 +117,7 @@ const PostList = ({posts}) => {
                         }
                     })
                 }
-                <div className="d-flex justify-content-between pt-3">
+                <div className="d-flex justify-content-between pt-3 px-4">
                     <div>
                         <button className="btn text-primary" onClick={() => handleLiking(post)}><i className={post.likes > 0 ? "fa-sharp fa-solid fa-heart fs-4" : "fa-sharp fa-regular fa-heart fs-4"}></i>{post.likes > 0 ? `${post.likes}` : ``}</button>
                     </div>

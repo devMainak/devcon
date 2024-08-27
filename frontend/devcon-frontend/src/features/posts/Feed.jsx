@@ -146,14 +146,14 @@ const Feed = () => {
 
     return (
         <>
-            <Header/>
             <main className="bg-dark-subtle" style={{minHeight:"100vh"}}>
-                <div className="d-flex pt-4 justify-content-around" style={{paddingLeft: "1in", paddingRight: "1in", gap: "1in", whiteSpace: 'nowrap'}}>
-                    <div style={{flex: "1 1 20vw"}}>
+                <div className="d-flex" style={{paddingRight: "0.5in", gap: "1in", whiteSpace: 'nowrap'}}>
+                    <div className="justify-conntent-start" style={{minWidth: "4in", minHeight: "100vh", position: "fixed"}} >
                         <SideNav/>
                     </div>
-                    <div style={{flex: "2 1 35vw"}}>
-                            <div className="card py-3">
+                    <div className="justify-content-center" style={{ width: "35vw" , marginTop: "30px", marginLeft: "7in"}}>
+                            <div className="fs-3 fw-semibold">Create a post</div>
+                            <div className="card my-2 py-3">
                                 <div className="d-flex px-3" style={{gap: "10px"}}>
                                         <div className="flex-grow-1 w-100">
                                             <form onSubmit={handlePostSubmit}>
@@ -189,8 +189,8 @@ const Feed = () => {
                             </div>
                             <h5 className="display-5 fw-semibold">Your Feed</h5> 
                                 <div className="d-flex pb-3" style={{gap: "10px"}}>
-                                    <button className="btn btn-light text-primary" onClick={() => setSortByLikes()}>{sortByLike}</button>
-                                    <select className="form-select text-primary" onChange={(e) => setSortByDate(e)} style={{maxWidth: "1.5in", minWidth: "1.5in"}}>
+                                    <button className="btn btn-light text-primary fw-semibold" onClick={() => setSortByLikes()}>{sortByLike}</button>
+                                    <select className="form-select text-primary fw-semibold" onChange={(e) => setSortByDate(e)} style={{maxWidth: "1.5in", minWidth: "1.5in"}}>
                                         <option value="">Sort by date</option>
                                         <option value="recent">Recent Posts</option>
                                         <option value="old">Old Posts</option>
@@ -198,7 +198,7 @@ const Feed = () => {
                                 </div>
                         <PostList posts={sortedPostsByDate} />
                     </div>
-                    <div style={{flex: "1 1 20vw"}}>
+                    <div className="align-item-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
                         <FollowList users={users}/>
                     </div>
                 </div>

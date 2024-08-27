@@ -2,14 +2,26 @@ import { Link } from "react-router-dom"
 
 const SideNav = () => {
     return (
-        <div>
-            <ul className="list-group">
-                <li className="list-group-item py-3"><Link className="fs-5" style={{textDecoration: "none"}}><i className="fa-solid fa-house-user px-3"></i> Home Feed</Link></li>
-                <li className="list-group-item py-3"><Link className="fs-5" style={{textDecoration: "none"}}><i className="fa-solid fa-bolt px-3"></i> Explore</Link></li>
-                <li className="list-group-item py-3"><Link className="fs-5" style={{textDecoration: "none"}}><i className="fa-sharp fa-solid fa-bookmark px-3"></i> Bookmarks</Link></li>
-                <li className="list-group-item py-3"><Link className="fs-5" style={{textDecoration: "none"}}><i className="fa-solid fa-user px-3"></i> Profile</Link></li>
-                </ul>
-            <Link className="btn btn-primary mt-3 w-100 fs-5">+ Create Post</Link>
+        <div className="bg-light p-4" style={{minHeight: "100vh"}}>
+           <div className="fs-2 fw-semibold text-primary"><Link style={{textDecoration: "none"}}>Devcon</Link></div>
+           <hr/>
+           <nav>
+                <div className="fs-5 pb-3">
+                    <Link style={{textDecoration: "none"}}><i className="fa- fa-solid fa-house"></i> <span>Home</span></Link>
+                </div>
+                <div className="fs-5 pb-3">
+                    <Link style={{textDecoration: "none"}}><i className="fa-sharp fa-regular fa-compass"></i> Explore</Link>
+                </div>
+                <div className="fs-5 pb-3">
+                    <Link style={{textDecoration: "none"}}><i className="fa-sharp fa-solid fa-bookmark"></i> Bookmarks</Link>
+                </div>
+                <div className="fs-5 pb-3">
+                    <Link style={{textDecoration: "none"}}><i className="fa-solid fa-square-plus"></i> Create</Link>
+                </div>
+                <div className="fs-5 pb-3">
+                    <Link style={{textDecoration: "none"}}><i className="fa-sharp fa-solid fa-user"></i> Profile</Link>
+                </div>
+           </nav>
         </div>
     )
 }
