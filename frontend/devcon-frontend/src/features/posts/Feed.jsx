@@ -157,7 +157,7 @@ const Feed = () => {
                                 <div className="d-flex px-3" style={{gap: "10px"}}>
                                         <div className="flex-grow-1 w-100">
                                             <form onSubmit={handlePostSubmit}>
-                                                <textarea className="bg-body-secondary p-2" onChange={(e) => setContent(e.target.value)} style={{width: '100%', borderRadius: "5px"}} rows={4} placeholder="Share something..."></textarea>
+                                                <textarea className="bg-body-secondary p-2" onChange={(e) => setContent(e.target.value)} style={{width: '100%', borderRadius: "5px"}} maxLength={100} rows={4} placeholder="Share something..."></textarea>
                                                 {mediaPerview && (
                                                     <div className="py-3">
                                                         {fileType === "image" && (
