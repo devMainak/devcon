@@ -5,6 +5,7 @@ const cors = require('cors')
 // Data models
 const Post = require('./models/post.model')
 const User = require('./models/user.model')
+const Bookmark = require('./models/bookmarks.model')
 
 // Function to initialize database connection
 const initializeDatabase = require('./config/db.connection')
@@ -176,7 +177,7 @@ app.post('/posts/like/:postId', async (req, res) => {
     }
 })
 
-// Function to like a post
+// Function to dislike a post
 const dislikeAPost = async (postId, post) => {
     try {
         const dislikedPost = await Post.findByIdAndUpdate(postId, {...post, likes: post.likes - 1}, {new: true})
@@ -353,7 +354,95 @@ app.post('/users/unfollow/:userId', async (req, res) => {
     }
 })
 
+// Function to get all bookmarks from db
+const readAllBookmarks = async () => {
+    try {
+        const bookmarks = await Bookmark.find()
+        return bookmarks
+    } catch(error) {
+        throw new Error(error)
+    }
+}
 
+// GET method on '/users/bookmark'
+app.get('/users/bookmark', async (req, res) => {
+    try {
+        const bookmarks = await readAllBookmarks()
+        if (bookmarks) {
+            res.status(200)
+            .json({message: "Bookmarks fetched successfully.", bookmarks: bookmarks})
+        } else {
+            res.status(400)
+            .json({message: })
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to fetch bookmarks."})
+    }
+})
+
+// Function to add post bookmarks
+const saveBookmark = async (postId, post) => {
+    try {
+        await Post.findByIdAndUpdate(postId, {...post, isBookmarked: true})
+        const postToSave = new Bookmark(post)
+        const bookmarkedPost = postToSave.save()
+        return bookmarkedPost
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+// POST method on '/users/bookmark/:postId' to add bookmark
+app.post('/users/bookmark/:postId', async (req, res) => {
+    const postId = req.params.postId
+    const post = req.body
+    try {
+        const bookmarkedPost = await saveBookmark(postId, post)
+        if (bookmarkedPost) {
+            res.status(201)
+            .json({message: "Post bookmarked.", bookmarkedPost: bookmarkedPost})
+        } else {
+            res.status(400)
+            .json({message: "Failed to bookmark."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json("Failed to add bookmark")
+    }
+})
+
+// Function to remove post from bookmarks
+const removeBookmark = async (postId) => {
+    try {
+        await Post.findByIdAndUpdate(postId, {isBookmarked: false})
+        const unBookmarkedPost = await Bookmark.findByIdAndDelete(postId)
+        return unBookmarkedPost
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+// POST method on '/users/remove-bookmark/:postId' to remove bookmark
+app.post('/users/remove-bookmark/:postId', async (req, res) => {
+    const postId = req.params.postId
+    try {
+        const unBookmarkedPost = await removeBookmark(postId)
+        if (unBookmarkedPost) {
+            res.status(200)
+            .json({message: "Bookmarked removed successfully.", unBookmarkedPost: unBookmarkedPost})
+        } else {
+            res.status(400)
+            .json({message: "Failed remove bookmark."})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500)
+        .json({error: "Failed to remove bookmark"})
+    }
+})
 
 // Exporting the app module 
 module.exports = app

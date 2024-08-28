@@ -60,7 +60,11 @@ const postSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ]
+    ],
+    isBookmarked: {
+        type: Boolean,
+        default: false
+    }
 
 }, { timestamps: true })
 
