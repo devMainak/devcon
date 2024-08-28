@@ -19,6 +19,7 @@ const Feed = () => {
     const [fileType, setFileType] = useState("")
     const [mediaPerview, setMediaPreview] = useState("")
     const [alert, setAlert] = useState("")
+    const [postButton, setPostButton] = useState("Post")
 
     // Fetching all posts on feed page load
     useEffect(() => {
@@ -67,6 +68,7 @@ const Feed = () => {
     // Creating a post
     const handlePostSubmit = async (e) => {
         e.preventDefault()
+        setPostButton("Posting")
         const formData = new FormData()
         formData.append('file', media)
         formData.append('upload_preset', preset)
@@ -87,19 +89,24 @@ const Feed = () => {
                     }
                     const resultAction = await dispatch(addPostAsync(post))
                     if (addPostAsync.fulfilled.match(resultAction)) {
-                        console.log("Posted!")
-                        // setAlert("Posted!")
-                        // setTimeout(() => {
-                        // setAlert("")
-                        // }, 2000)
+                       setPostButton("Post")
+                        // Clearing the form
+                        setContent("")
+                        setMedia(null)
+                        setFileType("")
+                        // Making the alert
+                        setAlert("Posted!")
+                        setTimeout(() => {
+                        setAlert("")
+                        }, 2000)
                     } 
                     
                 } else {
-                    console.log("Failed to post.")
-                    // setAlert("Failed to post.")
-                    // setTimeout(() => {
-                    // setAlert("")
-                    // }, 2000)
+                    setPostButton("Post")
+                    setAlert("Failed to post.")
+                    setTimeout(() => {
+                    setAlert("")
+                    }, 2000)
                 }
             } else {
                 if (content && user) {
@@ -113,18 +120,23 @@ const Feed = () => {
                     }
                     const resultAction = await dispatch(addPostAsync(post))
                     if (addPostAsync.fulfilled.match(resultAction)) {
-                        console.log("Posted!")
-                        // setAlert("Posted!")
-                        // setTimeout(() => {
-                        // setAlert("")
-                        // }, 2000)
+                        setPostButton("Post")
+                        // Clearing the form
+                        setContent("")
+                        setMedia(null)
+                        setFileType("")
+                        // Making the alert
+                        setAlert("Posted!")
+                        setTimeout(() => {
+                        setAlert("")
+                        }, 2000)
                     } 
                 } else {
-                    console.log("Failed to post.")
-                    // setAlert("Failed to post.")
-                    // setTimeout(() => {
-                    //     setAlert("")
-                    //     }, 2000)
+                    setPostButton("Post")
+                    setAlert("Failed to post.")
+                    setTimeout(() => {
+                        setAlert("")
+                        }, 2000)
                 }
             }
             
@@ -148,7 +160,7 @@ const Feed = () => {
         <>
             <main className="bg-dark-subtle" style={{minHeight:"100vh"}}>
                 <div className="d-flex" style={{paddingRight: "0.5in", gap: "1in", whiteSpace: 'nowrap'}}>
-                    <div className="justify-conntent-start" style={{minWidth: "4in", minHeight: "100vh", position: "fixed"}} >
+                    <div className="justify-content-start" style={{minWidth: "4in", minHeight: "100vh", position: "fixed", borderRight: "5px solid #0197f6"}} >
                         <SideNav/>
                     </div>
                     <div className="justify-content-center" style={{ width: "35vw" , marginTop: "30px", marginLeft: "7in"}}>
@@ -157,7 +169,7 @@ const Feed = () => {
                                 <div className="d-flex px-3" style={{gap: "10px"}}>
                                         <div className="flex-grow-1 w-100">
                                             <form onSubmit={handlePostSubmit}>
-                                                <textarea className="bg-body-secondary p-2" onChange={(e) => setContent(e.target.value)} style={{width: '100%', borderRadius: "5px"}} maxLength={100} rows={4} placeholder="Share something..."></textarea>
+                                                <textarea className="bg-body-secondary p-2" onChange={(e) => setContent(e.target.value)} value={content} style={{width: '100%', borderRadius: "5px"}} maxLength={100} rows={4} placeholder="Share something..."></textarea>
                                                 {mediaPerview && (
                                                     <div className="py-3">
                                                         {fileType === "image" && (
@@ -180,13 +192,14 @@ const Feed = () => {
                                                         <input onChange={handleFileChange} id="fileInput" accept="image/*,video/*" type="file" style={{display: "none"}}/>
                                                     </div>
                                                     <div>
-                                                        <button className="btn btn-primary" type="submit">Post</button>
+                                                        <button className="btn btn-primary" disabled={postButton !== "Post" ? true : false} type="submit">{postButton}</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                 </div>
                             </div>
+                            {alert && <div className={`alert alert-${alert === "Posted!" ? "success" : "danger"}`} role="alert">{alert}</div>}
                             <h5 className="display-5 fw-semibold">Your Feed</h5> 
                                 <div className="d-flex pb-3" style={{gap: "10px"}}>
                                     <button className="btn btn-light text-primary fw-semibold" onClick={() => setSortByLikes()}>{sortByLike}</button>
@@ -198,7 +211,7 @@ const Feed = () => {
                                 </div>
                         <PostList posts={sortedPostsByDate} />
                     </div>
-                    <div className="align-item-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
+                    <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
                         <FollowList users={users}/>
                     </div>
                 </div>

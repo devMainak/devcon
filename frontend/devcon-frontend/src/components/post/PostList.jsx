@@ -99,7 +99,7 @@ const PostList = ({posts}) => {
                         </div>
                     </div>
                 ) : (
-                    <div className="fs-5 pt-3 px-4">{post.content}</div>
+                    <div className="fs-5 pt-3 px-2">{post.content}</div>
                 )}
                 {post.media.length > 0 && 
                     post.media.map((media, index) => {

@@ -30,4 +30,7 @@ const store = configureStore({
 // Creating persistor
 export const persistor = persistStore(store)
 
+// For making the store fluid
+// persistor.purge()
+
 export default store
