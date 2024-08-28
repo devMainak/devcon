@@ -63,7 +63,7 @@ const bookmarkSchema = new mongoose.Schema({
     ],
     isBookmarked: {
         type: Boolean,
-        default: false
+        default: true
     }
 
 }, { timestamps: true })
