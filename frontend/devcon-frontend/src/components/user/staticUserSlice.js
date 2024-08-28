@@ -47,7 +47,7 @@ export const staticUserSlice = createSlice({
 })
 
 // Exporting action creator functions
-export const { setProfileImage } = staticUserSlice.actions
+export const { saveProfileData } = staticUserSlice.actions
 
 // Exporting default reducers
 export default staticUserSlice.reducer
