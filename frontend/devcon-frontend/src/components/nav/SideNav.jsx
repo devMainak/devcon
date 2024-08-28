@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom"
 
 const SideNav = () => {
+    
+    
     return (
         <div className="bg-light p-4" style={{minHeight: "100vh"}}>
            <div className="fs-2 fw-semibold text-primary"><Link style={{textDecoration: "none"}}>Devcon</Link></div>

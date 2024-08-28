@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import Header from "../../components/Header"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { fetchPostsAsync, addPostAsync ,handleSortByLikes, handleSortByDate } from "./postsSlice"
@@ -163,7 +162,7 @@ const Feed = () => {
                     <div className="justify-content-start" style={{minWidth: "4in", minHeight: "100vh", position: "fixed", borderRight: "5px solid #0197f6"}} >
                         <SideNav/>
                     </div>
-                    <div className="justify-content-center" style={{ width: "35vw" , marginTop: "30px", marginLeft: "7in"}}>
+                    <div id="createPostBox" className="justify-content-center" style={{ width: "35vw" , marginTop: "30px", marginLeft: "7in"}}>
                             <div className="fs-3 fw-semibold">Create a post</div>
                             <div className="card my-2 py-3">
                                 <div className="d-flex px-3" style={{gap: "10px"}}>
