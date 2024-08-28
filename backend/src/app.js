@@ -373,7 +373,7 @@ app.get('/users/bookmark', async (req, res) => {
             .json({message: "Bookmarks fetched successfully.", bookmarks: bookmarks})
         } else {
             res.status(400)
-            .json({message: })
+            .json({message: "Failed to fetch bookmarks"})
         }
     } catch (error) {
         console.error(error)

@@ -4,19 +4,21 @@ import { persistStore, persistReducer } from 'redux-persist'
 import { postsSlice } from '../features/posts/postsSlice'
 import { usersSlice } from '../features/users/usersSlice'
 import { staticUserSlice } from '../components/user/staticUserSlice'
+import { bookmarksSlice } from '../features/bookmarks/bookmarksSlice'
 
 // Defining persist config
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['posts', 'users', 'staticUser']
+    whitelist: ['posts', 'users', 'staticUser', 'bookmarks']
 }
 
 // Combining reducers
 const rootReducer = combineReducers({
     posts: postsSlice.reducer,
     users: usersSlice.reducer,
-    staticUser: staticUserSlice.reducer 
+    staticUser: staticUserSlice.reducer,
+    bookmarks: bookmarksSlice.reducer
 })
 
 // Creating persisted reducer
