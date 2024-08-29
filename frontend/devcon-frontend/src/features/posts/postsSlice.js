@@ -55,6 +55,24 @@ export const postsSlice = createSlice({
         // For handling sort by date
         handleSortByDate: (state, action) => {
             state.sortByDate = action.payload
+        },
+        // For updating bookmarked status of post
+        markAsBookmarked: (state, action) => {
+            state.posts = state.posts.map(post => {
+                if (post._id === action.payload) {
+                    return {...post, isBookmarked: true}
+                }
+                return post
+            })
+        },
+        // For updating unbookmarked status of post
+        unmarkAsBookmarked: (state, action) => {
+            state.posts = state.posts.map(post => {
+                if (post._id === action.payload) {
+                    return {...post, isBookmarked: false}
+                }
+                return post
+            })
         }
     },
     extraReducers: (builder) => {
@@ -96,7 +114,7 @@ export const postsSlice = createSlice({
 })
 
 // Exporting the action creators
-export const { handleSortByLikes, handleSortByDate } = postsSlice.actions
+export const { handleSortByLikes, handleSortByDate, markAsBookmarked, unmarkAsBookmarked } = postsSlice.actions
 
 // exporting the reducer for the store
 export default postsSlice.reducer
