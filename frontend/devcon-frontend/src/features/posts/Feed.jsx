@@ -27,7 +27,7 @@ const Feed = () => {
     }, [])
     
     // Accessing posts
-    const { posts, sortByLike, sortByDate } = useSelector(state => state.posts)
+    const { posts, status, error, sortByLike, sortByDate } = useSelector(state => state.posts)
     
     // Accessing users
     const { users } = useSelector(state => state.users)
@@ -199,8 +199,19 @@ const Feed = () => {
                                 </div>
                             </div>
                             {alert && <div className={`alert alert-${alert === "Posted!" ? "success" : "danger"}`} role="alert">{alert}</div>}
+                            
                             <h5 className="display-5 fw-semibold">Your Feed</h5> 
-                                <div className="d-flex pb-3" style={{gap: "10px"}}>
+                            {status === "loading" && 
+                                <div className="d-flex justify-content-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                              </div>
+                            }
+                            {error && <p className="fs-4 fw-semibold text-center">{error}</p>}
+                            {posts && posts.length > 0 ? 
+                                <div>
+                                    <div className="d-flex pb-3" style={{gap: "10px"}}>
                                     <button className="btn btn-light text-primary fw-semibold" onClick={() => setSortByLikes()}>{sortByLike}</button>
                                     <select className="form-select text-primary fw-semibold" onChange={(e) => setSortByDate(e)} style={{maxWidth: "1.5in", minWidth: "1.5in"}}>
                                         <option value="">Sort by date</option>
@@ -209,6 +220,10 @@ const Feed = () => {
                                     </select>
                                 </div>
                         <PostList posts={sortedPostsByDate} />
+                                </div> :
+                                <p className="fs-4 fw-semibold text-center">No posts found.</p>
+                            }
+                                
                     </div>
                     <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", overflowWrap: "break-word", whiteSpace: 'normal'}}>
                         <FollowList users={users}/>
