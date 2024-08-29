@@ -15,7 +15,7 @@ const SideNav = () => {
                     <Link style={{textDecoration: "none"}}><i className="fa-sharp fa-regular fa-compass"></i> Explore</Link>
                 </div>
                 <div className="fs-5 pb-4">
-                    <Link style={{textDecoration: "none"}}><i className="fa-sharp fa-solid fa-bookmark"></i> Bookmarks</Link>
+                    <Link to={`/bookmarks`} style={{textDecoration: "none"}}><i className="fa-sharp fa-solid fa-bookmark"></i> Bookmarks</Link>
                 </div>
                 <div className="fs-5 pb-4">
                     <Link style={{textDecoration: "none"}}><i className="fa-solid fa-square-plus"></i> Create</Link>
