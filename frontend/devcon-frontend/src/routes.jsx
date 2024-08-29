@@ -1,5 +1,6 @@
 import App from './App'
 import Profile from './features/profile/Profile'
+import BookmarkView from './features/bookmarks/BookmarkView'
 
 // Defining routes
 const routes = [
@@ -11,6 +12,10 @@ const routes = [
     {
         path: '/profile',
         element: <Profile/>
+    },
+    {
+        path: '/bookmarks',
+        element: <BookmarkView/>
     }
 ]
 

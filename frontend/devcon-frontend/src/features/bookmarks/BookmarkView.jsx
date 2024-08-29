@@ -13,7 +13,7 @@ const BookmarkView = () => {
     }, [])
 
     // Accessing bookmarks
-    const { bookmarks } = useSelector(state => state.bookmarks)
+    const { bookmarks, status, error } = useSelector(state => state.bookmarks)
 
     return (
         <>
@@ -24,9 +24,22 @@ const BookmarkView = () => {
                     </div>
                     <div className="justify-content-center" style={{ width: "35vw" , marginTop: "1in", marginLeft: "7in"}}>
                         
-                        <div className='fs-3 fw-bold my-3'>Bookmarks</div>
                         <div>
-                            <PostList posts={userPosts}/>
+                            {status === "loading" && 
+                                <div style={{margin: "auto"}} class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                              </div>
+                            }
+                            {error && <p className="fs-4 fw-semibold text-center">{error}</p>}
+                            {bookmarks && bookmarks.length > 0 ? 
+                                <div>
+                                    <div className='fs-3 fw-bold my-3'>Bookmarks</div>
+                                    <PostList posts={userPosts}/> 
+                                </div>
+                               :
+                                <p className="fs-4 fw-semibold text-center">No bookmarked posts.</p>
+                            }
+                            
                         </div>
                     </div>
                     {/* <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
