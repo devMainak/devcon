@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+
 // Async function to fetch all the bookmarks
 export const fetchBookmarkAsync = createAsyncThunk('fetch/bookmarks', async () => {
     const response = await axios.get('http://localhost:3000/users/bookmark')
@@ -15,7 +16,7 @@ export const addBookmarkAsync = createAsyncThunk('add/bookmark', async (post) =>
 
 // Async function to remove bookmark
 export const removeBookmarkAsync = createAsyncThunk('remove/bookmark', async (postId) => {
-    const response = await axios.post(`http://localhost:3000/users/remove-bookmark/${post._id}`)
+    const response = await axios.post(`http://localhost:3000/users/remove-bookmark/${postId}`)
     return response.data
 })
 
@@ -36,12 +37,20 @@ export const bookmarksSlice = createSlice({
         // Success case for fetchBookmarkAsync
         builder.addCase(fetchBookmarkAsync.fulfilled, (state, action) => {
             state.status = "success"
-            state.booksmarks = action.payload.booksmarks
+            state.bookmarks = action.payload.bookmarks
         })
         // Rejected case for fetchBookmarkAsync
         builder.addCase(fetchBookmarkAsync.rejected, (state, action) => {
             state.status = "error"
             state.error = action.payload.error
+        }),
+        // Success case for addBookmarkAsync
+        builder.addCase(addBookmarkAsync.fulfilled, (state, action) => {
+            state.bookmarks.push(action.payload.bookmarkedPost)
+        })
+        // Success case for unbookmarkedAsync
+        builder.addCase(removeBookmarkAsync.fulfilled, (state, action) => {
+            state.bookmarks = state.bookmarks.filter(post => post._id !== action.payload.unBookmarkedPost._id)
         })
     }
 })
