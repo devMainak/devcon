@@ -92,7 +92,7 @@ const PostList = ({ posts }) => {
   // Function to remove bookmark
   const handleBookmarkRemove = async (postId) => {
     try {
-      const resultAction = await dispatch(removeBookmarkAsync(postId))
+      const resultAction = await dispatch(removeBookmarkAsync(postId));
       if (removeBookmarkAsync.fulfilled.match(resultAction)) {
         dispatch(unmarkAsBookmarked(postId));
       }

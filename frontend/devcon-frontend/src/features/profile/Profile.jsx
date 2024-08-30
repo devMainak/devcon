@@ -181,11 +181,11 @@ const Profile = () => {
                         <div className="text-primary">Posts</div>
                       </div>
                       <div className="text-center fs-5 fw-semibold">
-                        <div>{user.followers}</div>
+                        <div>{user.followers.length}</div>
                         <div className="text-primary">Followers</div>
                       </div>
                       <div className="text-center fs-5 fw-semibold">
-                        <div>{user.following}</div>
+                        <div>{user.following.length}</div>
                         <div className="text-primary">Following</div>
                       </div>
                     </div>

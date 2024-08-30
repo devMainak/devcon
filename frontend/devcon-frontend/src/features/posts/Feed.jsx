@@ -23,14 +23,10 @@ const Feed = () => {
     // Fetching all posts on feed page load
     useEffect(() => {
         dispatch(fetchPostsAsync())
-        dispatch(fetchUsersAsync())
     }, [])
     
     // Accessing posts
     const { posts, status, error, sortByLike, sortByDate } = useSelector(state => state.posts)
-    
-    // Accessing users
-    const { users } = useSelector(state => state.users)
 
     // Accessing staticUser
     const { user } = useSelector(state => state.staticUser)
@@ -157,11 +153,14 @@ const Feed = () => {
 
     return (
         <>
+            <header>
+            <div className="d-flex justify-content-start" style={{minWidth: "4in", minHeight: "100vh", position: "fixed", borderRight: "5px solid #0197f6"}} >
+                <SideNav/>
+            </div>
+            </header>
             <main className="bg-dark-subtle" style={{minHeight:"100vh"}}>
                 <div className="d-flex" style={{paddingRight: "0.5in", gap: "1in", overflowWrap: "break-word", whiteSpace: 'normal'}}>
-                    <div className="justify-content-start" style={{minWidth: "4in", minHeight: "100vh", position: "fixed", borderRight: "5px solid #0197f6"}} >
-                        <SideNav/>
-                    </div>
+                    
                     <div id="createPostBox" className="justify-content-center" style={{ width: "35vw" , marginTop: "30px", marginLeft: "7in"}}>
                             <div className="fs-3 fw-semibold">Create a post</div>
                             <div className="card my-2 py-3">
@@ -226,7 +225,7 @@ const Feed = () => {
                                 
                     </div>
                     <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", overflowWrap: "break-word", whiteSpace: 'normal'}}>
-                        <FollowList users={users}/>
+                        <FollowList/>
                     </div>
                 </div>
             </main>
