@@ -14,7 +14,8 @@ import {
   removeBookmarkAsync,
 } from "../../features/bookmarks/bookmarksSlice";
 
-const PostList = ({ posts }) => {
+
+const PostList = ({ posts, user }) => {
   // Configuring useDispatch for usage
   const dispatch = useDispatch();
 
@@ -240,20 +241,24 @@ const PostList = ({ posts }) => {
                   </button>
                 </div>
                 <div>
-                  <button
-                    className="btn text-primary"
-                    onClick={() => handleEditPost(post)}
-                  >
-                    <i className="fa-sharp fa-regular fa-pen-to-square fs-4"></i>
-                  </button>
+                  {post.author.username === user.username && (
+                    <button
+                      className="btn text-primary"
+                      onClick={() => handleEditPost(post)}
+                    >
+                      <i className="fa-sharp fa-regular fa-pen-to-square fs-4"></i>
+                    </button>
+                  )}
                 </div>
                 <div>
-                  <button
-                    className="btn text-danger"
-                    onClick={() => handleDeletePost(post._id)}
-                  >
-                    <i className="fa-sharp fa-solid fa-trash fs-5"></i>
-                  </button>
+                  {post.author.username === user.username && (
+                    <button
+                      className="btn text-danger"
+                      onClick={() => handleDeletePost(post._id)}
+                    >
+                      <i className="fa-sharp fa-solid fa-trash fs-5"></i>
+                    </button>
+                  )}
                 </div>
                 <div>
                   <button
