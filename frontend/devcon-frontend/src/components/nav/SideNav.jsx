@@ -21,7 +21,7 @@ const SideNav = () => {
           </Link>
         </div>
         <div className="fs-5 pb-4">
-          <Link style={{ textDecoration: "none" }}>
+          <Link to={`/explore`} style={{ textDecoration: "none" }}>
             <i className="fa-sharp fa-regular fa-compass"></i> Explore
           </Link>
         </div>

@@ -4,7 +4,6 @@ import { saveProfileData } from "../../components/user/staticUserSlice";
 import SideNav from "../../components/nav/SideNav";
 import FollowList from "../../components/user/FollowList";
 import PostList from "../../components/post/PostList";
-import { Link } from "react-router-dom";
 
 const Profile = () => {
   // Configuring use dispatch
@@ -78,7 +77,7 @@ const Profile = () => {
           </div>
           <div
             className="justify-content-center"
-            style={{ width: "35vw", marginTop: "1in", marginLeft: "7in" }}
+            style={{ width: "35vw", marginTop: "0.5in", marginLeft: "7in" }}
           >
             {editMode ? (
               <div>
@@ -195,12 +194,12 @@ const Profile = () => {
             )}
             <div className="fs-3 fw-bold my-3">Your Posts</div>
             <div>
-              <PostList posts={userPosts} />
+              <PostList posts={userPosts} user={user} />
             </div>
           </div>
-          {/* <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
-                        <FollowList users={users}/>
-                    </div> */}
+          <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
+                        <FollowList/>
+                    </div>
         </div>
       </main>
     </>

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchBookmarkAsync } from "./bookmarksSlice";
 import SideNav from "../../components/nav/SideNav";
 import BookmarkList from "./BookmarkList";
+import FollowList from "../../components/user/FollowList";
 
 const BookmarkView = () => {
   // Configuring useDispatch for usage
@@ -41,9 +42,10 @@ const BookmarkView = () => {
           </div>
           <div
             className="justify-content-center"
-            style={{ width: "35vw", marginTop: "0.5in", marginLeft: "7in" }}
+            style={{ width: "35vw", marginTop: "30px", marginLeft: "7in" }}
           >
             <div>
+            <h4 className="display-4 fw-semibold pb-3">Bookmarks</h4>
               {status === "loading" && (
                 <div
                   style={{ margin: "auto" }}
@@ -57,7 +59,7 @@ const BookmarkView = () => {
 
               {bookmarks && bookmarks.length > 0 ? (
                 <div>
-                  <p className="fs-3 fw-semibold">Bookmarks</p>
+                  
                   <BookmarkList bookmarks={bookmarks} />
                 </div>
               ) : (
@@ -65,9 +67,9 @@ const BookmarkView = () => {
               )}
             </div>
           </div>
-          {/* <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
-                        <FollowList users={users}/>
-                    </div> */}
+          <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
+                        <FollowList/>
+                    </div>
         </div>
       </main>
     </>

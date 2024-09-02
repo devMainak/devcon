@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPostsAsync } from "../posts/postsSlice";
 import SideNav from "../../components/nav/SideNav";
 import PostList from "../../components/post/PostList";
+import FollowList from "../../components/user/FollowList";
 
 const ExploreFeed = () => {
   // Configuring useDispatch
@@ -42,7 +43,7 @@ const ExploreFeed = () => {
           </div>
           <div
             className="justify-content-center"
-            style={{ width: "35vw", marginTop: "0.5in", marginLeft: "7in" }}
+            style={{ width: "35vw", marginTop: "30px", marginLeft: "7in" }}
           >
             <h4 className="display-4 fw-semibold pb-3">Explore</h4>
             <div>
@@ -63,9 +64,9 @@ const ExploreFeed = () => {
               )}
             </div>
           </div>
-          {/* <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
-                        <FollowList users={users}/>
-                    </div> */}
+          <div className="justify-content-end" style={{width: "20vw", marginTop: "30px", whiteSpace: "nowrap"}}>
+                        <FollowList/>
+                    </div>
         </div>
       </main>
     </>
