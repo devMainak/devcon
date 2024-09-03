@@ -1,12 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  fetchPostsAsync,
-  addPostAsync,
-  handleSortByLikes,
-  handleSortByDate,
-} from "./postsSlice";
+import { fetchPostsAsync, addPostAsync, handleSortByDate } from "./postsSlice";
 import PostList from "../../components/post/PostList";
 
 const Feed = () => {
@@ -20,6 +15,7 @@ const Feed = () => {
   const [mediaPerview, setMediaPreview] = useState("");
   const [alert, setAlert] = useState("");
   const [postButton, setPostButton] = useState("Post");
+  const [sortbyLikes, setSortByLikes] = useState("Most Liked");
 
   // Fetching all posts on feed page load
   useEffect(() => {
@@ -27,7 +23,7 @@ const Feed = () => {
   }, []);
 
   // Accessing posts
-  const { posts, status, error, sortByLike, sortByDate } = useSelector(
+  const { posts, status, error, sortByDate } = useSelector(
     (state) => state.posts
   );
 
@@ -39,9 +35,8 @@ const Feed = () => {
   const preset = "myCloud";
 
   // Handle sort by likes
-  const setSortByLikes = () => {
-    dispatch(handleSortByLikes());
-    console.log(sortByLike);
+  const handleSortByLikes = () => {
+    setSortByLikes(sortbyLikes === "Most Liked" ? "All Posts" : "Most Liked");
   };
 
   // Handle sort by date
@@ -155,9 +150,9 @@ const Feed = () => {
 
   // Sorted posts by likes
   const sortedPostsByLikes =
-    sortByLike === "Most Liked"
+    sortbyLikes === "All Posts"
       ? userAndFollowingPosts.sort((a, b) => b.likes - a.likes)
-      : userAndFollowingPosts.sort((a, b) => a.likes - b.likes);
+      : userAndFollowingPosts;
 
   // Sorted posts by date
   const sortedPostsByDate =
@@ -264,9 +259,9 @@ const Feed = () => {
           <div className="d-flex pb-3" style={{ gap: "10px" }}>
             <button
               className="btn btn-light text-primary fw-semibold"
-              onClick={() => setSortByLikes()}
+              onClick={() => handleSortByLikes()}
             >
-              {sortByLike}
+              {sortbyLikes}
             </button>
             <select
               className="form-select text-primary fw-semibold"
