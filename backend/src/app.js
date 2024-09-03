@@ -146,7 +146,7 @@ const likeAPost = async (postId, post) => {
   try {
     const likedPost = await Post.findByIdAndUpdate(
       postId,
-      { ...post, likes: post.likes + 1 },
+      { ...post, likes: post.likes + 1, isLiked: true },
       { new: true }
     );
     return likedPost;
@@ -177,7 +177,7 @@ const dislikeAPost = async (postId, post) => {
   try {
     const dislikedPost = await Post.findByIdAndUpdate(
       postId,
-      { ...post, likes: post.likes - 1 },
+      { ...post, likes: post.likes - 1, isLiked: false },
       { new: true }
     );
     return dislikedPost;

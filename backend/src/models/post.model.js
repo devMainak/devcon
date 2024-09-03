@@ -61,6 +61,10 @@ const postSchema = new mongoose.Schema({
             }
         }
     ],
+    isLiked: {
+        type: Boolean,
+        default: false
+    },
     isBookmarked: {
         type: Boolean,
         default: false
