@@ -3,6 +3,7 @@ import Feed from "./features/posts/Feed";
 import Profile from "./features/profile/Profile";
 import BookmarkView from "./features/bookmarks/BookmarkView";
 import ExploreFeed from "./features/explore/ExploreFeed";
+import CreatePost from "./components/post/CreatePost";
 
 // Defining routes
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
         path: "profile",
         element: <Profile />,
       },
+      {
+        path: "create",
+        element: <CreatePost/>
+      }
     ],
   },
 ];

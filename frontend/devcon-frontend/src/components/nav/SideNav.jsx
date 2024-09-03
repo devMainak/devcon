@@ -32,20 +32,16 @@ const SideNav = () => {
           </Link>
         </div>
         <div className="fs-5 pb-4">
+          <Link to={`create`} style={{ textDecoration: "none" }}>
+            <i className="fa-sharp fa-solid fa-plus"></i> Create
+          </Link>
+        </div>
+        <div className="fs-5 pb-4">
           <Link to={`profile`} style={{ textDecoration: "none" }}>
             <i className="fa-sharp fa-solid fa-user"></i> Profile
           </Link>
         </div>
       </nav>
-      <div className="d-grid gap-2 d-md-block mt-3">
-        <button
-          onClick={() => handleShowModal()}
-          className="btn btn-primary btn-lg"
-          type="button"
-        >
-          + Create a post
-        </button>
-      </div>
     </div>
   );
 };
