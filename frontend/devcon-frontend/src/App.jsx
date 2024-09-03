@@ -33,7 +33,7 @@ function App() {
         >
           <div
             className="justify-content-center"
-            style={{ width: "35vw", marginTop: "30px", marginLeft: "7in" }}
+            style={{ width: "35vw", marginTop: "30px", marginLeft: "7in", marginBottom: "0.5in" }}
           >
             <Outlet/>
           </div>
