@@ -17,21 +17,21 @@ const SideNav = () => {
       <nav>
         <div className="fs-5 pb-4">
           <Link to={`/`} style={{ textDecoration: "none" }}>
-            <i className="fa- fa-solid fa-house"></i> <span>Home</span>
+            <i className="fa-sharp fa-solid fa-house"></i> <span>Home</span>
           </Link>
         </div>
         <div className="fs-5 pb-4">
-          <Link to={`/explore`} style={{ textDecoration: "none" }}>
+          <Link to={`explore`} style={{ textDecoration: "none" }}>
             <i className="fa-sharp fa-regular fa-compass"></i> Explore
           </Link>
         </div>
         <div className="fs-5 pb-4">
-          <Link to={`/bookmarks`} style={{ textDecoration: "none" }}>
+          <Link to={`bookmarks`} style={{ textDecoration: "none" }}>
             <i className="fa-sharp fa-solid fa-bookmark"></i> Bookmarks
           </Link>
         </div>
         <div className="fs-5 pb-4">
-          <Link to={`/profile`} style={{ textDecoration: "none" }}>
+          <Link to={`profile`} style={{ textDecoration: "none" }}>
             <i className="fa-sharp fa-solid fa-user"></i> Profile
           </Link>
         </div>

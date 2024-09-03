@@ -72,7 +72,7 @@ const FollowList = () => {
                   className="btn btn-primary"
                 >
                   {" "}
-                  {user.isFollowed ? "Unfollow" : "Follow"}
+                  {user.isFollowed ? "Unfollow" : "+ Follow"}
                 </button>
               </div>
             </div>
