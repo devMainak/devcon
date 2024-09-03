@@ -71,7 +71,7 @@ const PostList = ({ posts, user }) => {
 
   // Function handle liking or disliking a post a post
   const handleLiking = (post) => {
-    if (post.likes === 0) {
+    if (!post.isLiked) {
       dispatch(likePostAsync({ postId: post._id, post }));
     } else {
       dispatch(dislikePostAsync({ postId: post._id, post }));
@@ -232,12 +232,13 @@ const PostList = ({ posts, user }) => {
                   >
                     <i
                       className={
-                        post.likes > 0
+                        post.isLiked
                           ? "fa-sharp fa-solid fa-heart fs-4"
                           : "fa-sharp fa-regular fa-heart fs-4"
                       }
                     ></i>
-                    {post.likes > 0 ? `${post.likes}` : ``}
+                    {" "}
+                    {post.likes > 0 ? <span className="fs-4">{post.likes}</span> : ``}
                   </button>
                 </div>
                 <div>

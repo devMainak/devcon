@@ -8,7 +8,7 @@ const Feed = () => {
   // Configuring useDispatch() for usage
   const dispatch = useDispatch();
 
-  const [sortbyLikes, setSortByLikes] = useState("Most Liked");
+  const [sortbyLikes, setSortByLikes] = useState("All Posts");
 
   // Fetching all posts on feed page load
   useEffect(() => {
@@ -62,10 +62,12 @@ const Feed = () => {
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
 
+  console.log(sortedPostsByDate);
+
   return (
     <div>
       <div>
-        <CreatePost/>
+        <CreatePost />
       </div>
       <h4 className="display-4 fw-semibold">Your Feed</h4>
       {status === "loading" && (
