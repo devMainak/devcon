@@ -49,8 +49,8 @@ const Feed = () => {
   // Sorted posts by likes
   const sortedPostsByLikes =
     sortbyLikes === "All Posts"
-      ? userAndFollowingPosts.sort((a, b) => b.likes - a.likes)
-      : userAndFollowingPosts;
+      ? userAndFollowingPosts
+      : userAndFollowingPosts.sort((a, b) => b.likes - a.likes);
 
   // Sorted posts by date
   const sortedPostsByDate =
@@ -62,7 +62,6 @@ const Feed = () => {
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
 
-  console.log(sortedPostsByDate);
 
   return (
     <div>
