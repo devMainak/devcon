@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Async function to fetch users
 export const fetchUsersAsync = createAsyncThunk("fetch/users", async () => {
-  const response = await axios.get("http://localhost:3000/users");
+  const response = await axios.get("https://devcon-swart.vercel.app/users");
   return response.data;
 });
 
@@ -12,7 +12,7 @@ export const followUserAsync = createAsyncThunk(
   "follow/user",
   async (userId) => {
     const response = await axios.post(
-      `http://localhost:3000/users/follow/${userId}`
+      `https://devcon-swart.vercel.app/users/follow/${userId}`
     );
     return response.data;
   }
@@ -23,7 +23,7 @@ export const unfollowUserAsync = createAsyncThunk(
   "unfollow/user",
   async (userId) => {
     const response = await axios.post(
-      `http://localhost:3000/users/unfollow/${userId}`
+      `https://devcon-swart.vercel.app/users/unfollow/${userId}`
     );
     return response.data;
   }

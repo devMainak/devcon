@@ -3,13 +3,16 @@ import axios from "axios";
 
 // Async function to fetch posts
 export const fetchPostsAsync = createAsyncThunk("fetch/posts", async () => {
-  const response = await axios.get("http://localhost:3000/posts");
+  const response = await axios.get("https://devcon-swart.vercel.app/posts");
   return response.data;
 });
 
 // Async function to add post
 export const addPostAsync = createAsyncThunk("add/post", async (post) => {
-  const response = await axios.post("http://localhost:3000/user/post", post);
+  const response = await axios.post(
+    "https://devcon-swart.vercel.app/user/post",
+    post
+  );
   return response.data;
 });
 
@@ -18,7 +21,7 @@ export const updatePostAsync = createAsyncThunk(
   "update/post",
   async ({ postId, post }) => {
     const response = await axios.post(
-      `http://localhost:3000/posts/edit/${postId}`,
+      `https://devcon-swart.vercel.app/posts/edit/${postId}`,
       post
     );
     return response.data;
@@ -30,7 +33,7 @@ export const likePostAsync = createAsyncThunk(
   "like/post",
   async ({ postId, post }) => {
     const response = await axios.post(
-      `http://localhost:3000/posts/like/${postId}`,
+      `https://devcon-swart.vercel.app/posts/like/${postId}`,
       post
     );
     return response.data;
@@ -42,7 +45,7 @@ export const dislikePostAsync = createAsyncThunk(
   "dislike/post",
   async ({ postId, post }) => {
     const response = await axios.post(
-      `http://localhost:3000/posts/dislike/${postId}`,
+      `https://devcon-swart.vercel.app/posts/dislike/${postId}`,
       post
     );
     return response.data;
@@ -54,7 +57,7 @@ export const deletePostAsync = createAsyncThunk(
   "delete/post",
   async (postId) => {
     const response = await axios.delete(
-      `http://localhost:3000/user/posts/${postId}`
+      `https://devcon-swart.vercel.app/user/posts/${postId}`
     );
     return response.data;
   }
@@ -73,8 +76,7 @@ export const postsSlice = createSlice({
   reducers: {
     // For handling sort by date
     handleSortByLikes: (state, action) => {
-      state.sortByLike =
-        state.sortByLike === "Most Liked" ? "All Posts" : "Most Liked";
+      state.sortByLike = action.payload;
     },
     // For handling sort by date
     handleSortByDate: (state, action) => {
@@ -82,7 +84,7 @@ export const postsSlice = createSlice({
     },
     // For updating bookmarked status of post
     markAsBookmarked: (state, action) => {
-        state.posts = state.posts.map((post) => {
+      state.posts = state.posts.map((post) => {
         if (post._id === action.payload) {
           return { ...post, isBookmarked: true };
         }

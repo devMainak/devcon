@@ -4,19 +4,19 @@ import axios from 'axios'
 
 // Async function to fetch all the bookmarks
 export const fetchBookmarkAsync = createAsyncThunk('fetch/bookmarks', async () => {
-    const response = await axios.get('http://localhost:3000/users/bookmark')
+    const response = await axios.get('https://devcon-swart.vercel.app/users/bookmark')
     return response.data
 })
 
 // Async function to add bookmark
 export const addBookmarkAsync = createAsyncThunk('add/bookmark', async (post) => {
-    const response = await axios.post(`http://localhost:3000/users/bookmark/${post._id}`, post)
+    const response = await axios.post(`https://devcon-swart.vercel.app/users/bookmark/${post._id}`, post)
     return response.data
 })
 
 // Async function to remove bookmark
 export const removeBookmarkAsync = createAsyncThunk('remove/bookmark', async (postId) => {
-    const response = await axios.post(`http://localhost:3000/users/remove-bookmark/${postId}`)
+    const response = await axios.post(`https://devcon-swart.vercel.app/users/remove-bookmark/${postId}`)
     return response.data
 })
 
