@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SideNav = () => {
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  // const handleShowModal = () => setShowModal(true);
+  // const handleCloseModal = () => setShowModal(false);
 
   return (
     <div className="bg-light p-4" style={{ minHeight: "100vh", width: "4in" }}>

@@ -215,7 +215,7 @@ const PostList = ({ posts, user }) => {
                         <video
                           key={index}
                           controls
-                          style={{ maxHeight: "380px", maxWidth: "100%" }}
+                          style={{ maxHeight: "380px", width: "100%" }}
                         >
                           <source src={media.url} type="video/mp4" />
                           Your browser does not support the video tag.

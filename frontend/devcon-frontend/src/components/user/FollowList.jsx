@@ -51,8 +51,8 @@ const FollowList = () => {
             <div className="fs-5 text-primary">Show more</div>
           </div>
           {users.map((user) => (
-            <div className="d-flex justify-content-between mt-2">
-              <div className="d-flex">
+            <div className="d-flex justify-content-between mt-2" style={{flexWrap: "wrap"}}>
+              <div className="d-flex" style={{flexWrap: "wrap", gap: "1rem"}}>
                 <img
                   src={user.userImageUrl}
                   style={{
@@ -61,15 +61,15 @@ const FollowList = () => {
                     borderRadius: "50%",
                   }}
                 />
-                <div className="fs-5 px-3">
+                <div className="fs-5">
                   {user.name} <br />{" "}
                   <span className="fs-6 fw-semibold text-primary">{`@${user.username}`}</span>{" "}
                 </div>
               </div>
-              <div>
+              <div style={{alignSelf: "end"}}>
                 <button
                   onClick={() => handleFollowUser(user)}
-                  className="btn btn-primary"
+                  className="btn btn-primary my-2"
                 >
                   {" "}
                   {user.isFollowed ? "Unfollow" : "+ Follow"}
