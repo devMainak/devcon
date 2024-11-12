@@ -7,8 +7,8 @@ const {
 const router = express.Router();
 
 // Defining bookmark routes
-router.get("/users/bookmark", getBookmarks);
-router.post("/users/bookmark/:postId", addBookmark);
-router.post("/users/remove-bookmark/:postId", deleteBookmark);
+router.get("/", getBookmarks);
+router.post("/:postId", addBookmark);
+router.post("/delete/:postId", deleteBookmark);
 
 module.exports = router;

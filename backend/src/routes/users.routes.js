@@ -8,9 +8,9 @@ const {
 const router = express.Router();
 
 // Defining user routes
-router.get("/users", getUsers);
-router.post("/users/user", createUser);
-router.post("/users/follow/:follwedId", followUser);
-router.post("/users/unfollow/:unfollwedId", unfollowUser);
+router.get("/", getUsers);
+router.post("/create", createUser);
+router.post("/follow/:follwedId", followUser);
+router.post("/unfollow/:unfollwedId", unfollowUser);
 
 module.exports = router;

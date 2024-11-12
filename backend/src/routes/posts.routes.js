@@ -11,12 +11,12 @@ const {
 const router = express.Router();
 
 // Routes for posts
-router.get("/posts", getPosts);
-router.get("/posts/:postId", getPostById);
-router.post("/user/post", createPost);
-router.post("/posts/edit/:postId", updatePost);
-router.post("/posts/like/:postId", likePost);
-router.post("/posts/dislike/:postId", dislikePost);
-router.delete("/user/posts/:postId", deletePost);
+router.get("/", getPosts);
+router.get("/:postId", getPostById);
+router.post("/create", createPost);
+router.post("/edit/:postId", updatePost);
+router.post("/like/:postId", likePost);
+router.post("/dislike/:postId", dislikePost);
+router.delete("/delete/:postId", deletePost);
 
 module.exports = router;
