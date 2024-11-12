@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 // Defining Posts mongoose schema
 const postSchema = new mongoose.Schema(
   {
-    author: { type: mongoose.Schema.Types.ObjectId, ref: "users"},
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
     content: {
       type: String,
       trim: true,
@@ -26,10 +26,12 @@ const postSchema = new mongoose.Schema(
         },
       },
     ],
-    likes: {
-      type: Number,
-      default: 0,
-    },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+      },
+    ],
     comments: [
       {
         type: String,
@@ -49,10 +51,6 @@ const postSchema = new mongoose.Schema(
         },
       },
     ],
-    isLiked: {
-      type: Boolean,
-      default: false,
-    },
     isBookmarked: {
       type: Boolean,
       default: false,

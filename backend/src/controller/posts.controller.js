@@ -14,7 +14,7 @@ exports.getPosts = async (req, res) => {
   try {
     const posts = await readAllPosts();
     if (posts) {
-      res.status(200).json(posts);
+      res.status(200).json({ message: "Posts fetched successfully.", posts });
     } else {
       res.status(404).json({ message: "No posts found." });
     }
@@ -54,6 +54,7 @@ const savePost = async (post) => {
   try {
     const postToSave = new Post(post);
     const savedPost = await postToSave.save();
+    await savedPost.populate("author");
     return savedPost;
   } catch (error) {
     throw error;
@@ -110,14 +111,14 @@ exports.updatePost = async (req, res) => {
 };
 
 // Function to like a post
-const likeAPost = async (postId, post) => {
+const likeAPost = async (postId, likedUserId) => {
   try {
-    const likedPost = await Post.findByIdAndUpdate(
-      postId,
-      { ...post, likes: post.likes + 1, isLiked: true },
-      { new: true }
-    );
-    return likedPost;
+    const likedPost = await Post.findById(postId);
+    const updatedPostData = [...likedPost.likes, likedUserId];
+    const updatedPost = await Post.findByIdAndUpdate(postId, {
+      likes: updatedPostData,
+    });
+    return updatedPost;
   } catch (error) {
     throw error;
   }
@@ -125,9 +126,9 @@ const likeAPost = async (postId, post) => {
 
 exports.likePost = async (req, res) => {
   const postId = req.params.postId;
-  const post = req.body;
+  const { likedUserId } = req.body;
   try {
-    const likedPost = await likeAPost(postId, post);
+    const likedPost = await likeAPost(postId, likedUserId);
     if (likedPost) {
       res.status(200).json({ message: "Liked post.", likedPost: likedPost });
     } else {
@@ -140,14 +141,16 @@ exports.likePost = async (req, res) => {
 };
 
 // Function to dislike a post
-const dislikeAPost = async (postId, post) => {
+const dislikeAPost = async (postId, dislikedUserId) => {
   try {
-    const dislikedPost = await Post.findByIdAndUpdate(
-      postId,
-      { ...post, likes: post.likes - 1, isLiked: false },
-      { new: true }
+    const dislikedPost = await Post.findById(postId);
+    const updatedPostData = dislikedPost.likes.filter(
+      (user) => user._id !== dislikedUserId
     );
-    return dislikedPost;
+    const updatedPost = await Post.findByIdAndUpdate(postId, {
+      likes: updatedPostData,
+    });
+    return updatedPost;
   } catch (error) {
     throw error;
   }
