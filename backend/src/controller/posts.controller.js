@@ -86,6 +86,7 @@ const updatePostById = async (postId, post) => {
     });
     return updatedPost;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 };
@@ -115,9 +116,13 @@ const likeAPost = async (postId, likedUserId) => {
   try {
     const likedPost = await Post.findById(postId);
     const updatedPostData = [...likedPost.likes, likedUserId];
-    const updatedPost = await Post.findByIdAndUpdate(postId, {
-      likes: updatedPostData,
-    });
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        likes: updatedPostData,
+      },
+      { new: true }
+    );
     return updatedPost;
   } catch (error) {
     throw error;
@@ -143,24 +148,25 @@ exports.likePost = async (req, res) => {
 // Function to dislike a post
 const dislikeAPost = async (postId, dislikedUserId) => {
   try {
-    const dislikedPost = await Post.findById(postId);
-    const updatedPostData = dislikedPost.likes.filter(
-      (user) => user._id !== dislikedUserId
+    // Using $pull to remove the user from the likes array
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $pull: { likes: dislikedUserId } },
+      { new: true }
     );
-    const updatedPost = await Post.findByIdAndUpdate(postId, {
-      likes: updatedPostData,
-    });
+
     return updatedPost;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 };
 
 exports.dislikePost = async (req, res) => {
   const postId = req.params.postId;
-  const post = req.body;
+  const { dislikedUserId } = req.body;
   try {
-    const dislikedPost = await dislikeAPost(postId, post);
+    const dislikedPost = await dislikeAPost(postId, dislikedUserId);
     if (dislikedPost) {
       res
         .status(200)
