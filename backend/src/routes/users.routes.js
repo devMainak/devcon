@@ -10,7 +10,7 @@ const router = express.Router();
 // Defining user routes
 router.get("/", getUsers);
 router.post("/create", createUser);
-router.post("/follow/:follwedId", followUser);
-router.post("/unfollow/:unfollwedId", unfollowUser);
+router.post("/follow/:followedId", followUser);
+router.post("/unfollow/:unfollowedId", unfollowUser);
 
 module.exports = router;

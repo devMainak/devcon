@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const User = require("../models/user.model");
 
 // Function to get all users
@@ -54,31 +55,62 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// Function to follow user in DB
-const updateUserBeingFollowed = async ({ userId, followedId }) => {
+// Function to follow a user in the database
+const updateUserBeingFollowed = async ({ followedId, userId }) => {
   try {
-    const user = await User.findById(userId);
-    const updatedUser = await User.findByIdAndUpdate(userId, {
-      following: [...user.followers, followedId],
-    });
-    // Updating followed users follower list
-    const followedUser = await User.findById(followedId);
-    const updatedFollowedUser = await User.findByIdAndUpdate(followedId, {
-      followers: [...followedUser.followers, userId],
-    });
+    // Convert IDs to ObjectId to ensure compatibility
+    const followedObjectId = new mongoose.Types.ObjectId(followedId);
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+
+    // Check if both users exist in the database before proceeding with the update
+    const existingUser = await User.findById(userObjectId);
+    const existingFollowedUser = await User.findById(followedObjectId);
+
+    if (!existingUser) {
+      console.warn("User not found for userId:", userId);
+      return { message: "User not found" };
+    }
+    if (!existingFollowedUser) {
+      console.warn("Followed user not found for followedId:", followedId);
+      return { message: "Followed user not found" };
+    }
+
+    // Update the user's following list
+    const updatedUser = await User.findByIdAndUpdate(
+      userObjectId,
+      { $addToSet: { following: followedObjectId } },
+      { new: true }
+    );
+    console.log("Updated user following:", updatedUser);
+
+    // Update the followed user's followers list
+    const updatedFollowedUser = await User.findByIdAndUpdate(
+      followedObjectId,
+      { $addToSet: { followers: userObjectId } },
+      { new: true }
+    );
+
+    if (!updatedFollowedUser) {
+      console.warn("Update failed for followed user's followers:", followedId);
+      return { updatedUser, message: "Followed user update failed" };
+    }
+
+    console.log("Updated followed user's followers:", updatedFollowedUser);
+
     return { updatedUser, updatedFollowedUser };
   } catch (error) {
+    console.error("Error in updating following/followers:", error);
     throw new Error(error);
   }
 };
 
 exports.followUser = async (req, res) => {
-  const followedId = req.params.userId;
+  const followedId = req.params.followedId;
   const { userId } = req.body;
   try {
     const { updatedUser, updatedFollowedUser } = await updateUserBeingFollowed({
-      userId,
       followedId,
+      userId,
     });
     if (updatedUser && updatedFollowedUser) {
       res.status(200).json({
@@ -98,35 +130,35 @@ exports.followUser = async (req, res) => {
 };
 
 // Function to unfollow user in DB
-const updateUserBeingUnfollowed = async ({ userId, unfollowedId }) => {
+const updateUserBeingUnfollowed = async ({ unfollowedId, userId }) => {
   try {
-    const user = await User.findById(userId);
-    const updatedFollowingList = user.following.filter(
-      (user) => user._id !== unfollowedId
+    // Remove unfollowedId from the user's following list
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { following: unfollowedId } }, // Remove unfollowedId from following array
+      { new: true }
     );
-    const updatedUser = await User.findByIdAndUpdate(userId, {
-      following: updatedFollowingList,
-    });
-    // Updating unfollowed users follower list
-    const unfollowedUser = await User.findById(unfollowedId);
-    const updatedFollowersList = unfollowedUser.filter(
-      (user) => user._id !== userId
+
+    // Remove userId from the unfollowed user's followers list
+    const updatedUnfollowedUser = await User.findByIdAndUpdate(
+      unfollowedId,
+      { $pull: { followers: userId } }, // Remove userId from followers array
+      { new: true }
     );
-    const updatedUnfollowedUser = await User.findByIdAndUpdate(unfollowedId, {
-      followers: updatedFollowersList,
-    });
+
     return { updatedUser, updatedUnfollowedUser };
   } catch (error) {
+    console.error(error);
     throw new Error(error);
   }
 };
 
 exports.unfollowUser = async (req, res) => {
-  const unfollowedId = req.params.userId;
+  const unfollowedId = req.params.unfollowedId;
   const { userId } = req.body;
   try {
     const { updatedUser, updatedUnfollowedUser } =
-      await updateUserBeingUnfollowed({ userId, unfollowedId });
+      await updateUserBeingUnfollowed({ unfollowedId, userId });
     if (updatedUser && updatedUnfollowedUser) {
       res.status(200).json({
         message: `Unfollowed ${updatedUnfollowedUser.name}.`,
