@@ -1,4 +1,5 @@
 const Bookmark = require("../models/bookmarks.model");
+const Post = require("../models/post.model");
 
 // Function to get all bookmarks from db
 const readAllBookmarks = async () => {
@@ -28,15 +29,18 @@ exports.getBookmarks = async (req, res) => {
 };
 
 // Function to add post bookmarks
-const saveBookmark = async (postId, post) => {
+const saveBookmark = async (postId) => {
   try {
-    await Post.findByIdAndUpdate(postId, { ...post, isBookmarked: true });
     const postToSave = new Bookmark({
-      ...post,
-      isBookmarked: true,
-      postId: postId,
+      bookmarkedPost: postId,
     });
-    const bookmarkedPost = postToSave.save();
+    const bookmarkedPost = await postToSave.save();
+    await bookmarkedPost.populate("bookmarkedPost");
+
+    // Update the status of the post
+    await Post.findByIdAndUpdate(postId, {
+      isBookmarked: true,
+    });
     return bookmarkedPost;
   } catch (error) {
     throw new Error(error);
@@ -45,9 +49,8 @@ const saveBookmark = async (postId, post) => {
 
 exports.addBookmark = async (req, res) => {
   const postId = req.params.postId;
-  const post = req.body;
   try {
-    const bookmarkedPost = await saveBookmark(postId, post);
+    const bookmarkedPost = await saveBookmark(postId);
     if (bookmarkedPost) {
       res
         .status(201)
@@ -57,7 +60,7 @@ exports.addBookmark = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json("Failed to add bookmark");
+    res.status(500).json({ error: "Failed to add bookmark" });
   }
 };
 
@@ -65,7 +68,8 @@ exports.addBookmark = async (req, res) => {
 const removeBookmark = async (postId) => {
   try {
     const unBookmarkedPost = await Bookmark.findByIdAndDelete(postId);
-    await Post.findByIdAndUpdate(postId, {
+    const originalPostId = unBookmarkedPost.bookmarkedPost._id;
+    await Post.findByIdAndUpdate(originalPostId, {
       isBookmarked: false,
     });
     return unBookmarkedPost;

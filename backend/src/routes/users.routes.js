@@ -5,12 +5,13 @@ const {
   followUser,
   unfollowUser,
 } = require("../controller/users.controller");
+const authenticate = require("../middlewares/auth.middleware");
 const router = express.Router();
 
 // Defining user routes
-router.get("/", getUsers);
-router.post("/create", createUser);
-router.post("/follow/:followedId", followUser);
-router.post("/unfollow/:unfollowedId", unfollowUser);
+router.get("/", authenticate, getUsers);
+router.post("/create", authenticate, createUser);
+router.post("/follow/:followedId", authenticate, followUser);
+router.post("/unfollow/:unfollowedId", authenticate, unfollowUser);
 
 module.exports = router;

@@ -51,16 +51,12 @@ const postSchema = new mongoose.Schema(
         },
       },
     ],
-    isBookmarked: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );
 
 // Creating the model for post
-const Post = mongoose.model("Posts", postSchema);
+const Post = mongoose.model("posts", postSchema);
 
 // Exporting the Post model
 module.exports = Post;

@@ -5,11 +5,7 @@ const mongoose = require("mongoose");
 // Defining Posts mongoose schema
 const bookmarkSchema = new mongoose.Schema(
   {
-    post: { type: mongoose.Schema.Types.ObjectId, ref: "posts" },
-    isBookmarked: {
-      type: Boolean,
-      default: true,
-    },
+    bookmarkedPost: { type: mongoose.Schema.Types.ObjectId, ref: "posts" },
   },
   { timestamps: true }
 );

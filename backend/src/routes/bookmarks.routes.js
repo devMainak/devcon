@@ -4,11 +4,12 @@ const {
   addBookmark,
   deleteBookmark,
 } = require("../controller/bookmarks.controller");
+const authenticate = require("../middlewares/auth.middleware");
 const router = express.Router();
 
 // Defining bookmark routes
-router.get("/", getBookmarks);
-router.post("/:postId", addBookmark);
-router.post("/delete/:postId", deleteBookmark);
+router.get("/", authenticate, getBookmarks);
+router.post("/create/:postId", authenticate, addBookmark);
+router.delete("/delete/:postId", authenticate, deleteBookmark);
 
 module.exports = router;
