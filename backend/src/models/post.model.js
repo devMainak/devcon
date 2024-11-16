@@ -32,25 +32,10 @@ const postSchema = new mongoose.Schema(
         ref: "users",
       },
     ],
-    comments: [
-      {
-        type: String,
-        maxlength: 50,
-      },
-    ],
-    media: [
-      {
-        url: {
-          type: String,
-          required: true,
-        },
-        type: {
-          type: String,
-          enum: ["image", "video", "audio"],
-          required: true,
-        },
-      },
-    ],
+    isBookmarked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
