@@ -82,7 +82,7 @@ exports.refreshToken = async (req, res) => {
     }
 
     // Verify the refresh token
-    const userPayload = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+    jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
     // Generate a new access token
     const accessToken = jwt.sign({ id: tokenDoc.userId }, JWT_REFRESH_SECRET);
