@@ -69,7 +69,6 @@ exports.login = async (req, res) => {
 
 // Refresh Token Controller
 exports.refreshToken = async (req, res) => {
-  console.log(req.cookies);
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
