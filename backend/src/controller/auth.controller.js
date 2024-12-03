@@ -82,11 +82,15 @@ exports.refreshToken = async (req, res) => {
     }
 
     // Verify the refresh token
-    jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+    const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+
+    // Fetch user details
+    const user = await User.findById(tokenDoc.userId);
 
     // Generate a new access token
-    const user = User.findById(tokenDoc.userId)
-    const accessToken = jwt.sign({ id: tokenDoc.userId }, JWT_ACCESS_SECRET);
+    const accessToken = jwt.sign({ id: user._id }, JWT_ACCESS_SECRET, {
+      expiresIn: ACCESS_TOKEN_EXPIRES,
+    }); 
     res.json({ token: accessToken, user });
   } catch (err) {
     return res.status(403).json({ message: "Invalid refresh token" });
