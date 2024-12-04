@@ -54,8 +54,7 @@ const savePost = async (post) => {
   try {
     const postToSave = new Post(post);
     const savedPost = await postToSave.save();
-    await savedPost.populate("author");
-    return savedPost;
+    return await Post.findById(savedPost._id).populate("author");
   } catch (error) {
     throw error;
   }
