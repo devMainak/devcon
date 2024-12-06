@@ -3,7 +3,7 @@ const Post = require("../models/post.model");
 // read all the posts from DB logic
 const readAllPosts = async () => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate("author");
     return posts;
   } catch (error) {
     throw error;
@@ -27,7 +27,7 @@ exports.getPosts = async (req, res) => {
 // Function to read post by Id
 const readPostById = async (postId) => {
   try {
-    const postById = await Post.findById(postId);
+    const postById = await Post.findById(postId).populate("author");
     return postById;
   } catch (error) {
     throw error;
