@@ -4,7 +4,7 @@ import { refreshTokenAsync, logoutAsync } from "../features/auth/authSlice";
 const createApiClient = (token, dispatch) => {
   // Create an Axios instance
   const apiClient = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://devcon-swart.vercel.app",
     withCredentials: true, // Include cookies in requests
   });
 

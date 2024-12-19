@@ -8,7 +8,7 @@ export const loginAsync = createAsyncThunk(
   async (authCredentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/login",
+        "https://devcon-swart.vercel.app/auth/login",
         authCredentials,
         { withCredentials: true }
       );
@@ -42,7 +42,7 @@ export const refreshTokenAsync = createAsyncThunk(
     try {
       // const apiClient = createApiClient();
       const response = await axios.post(
-        "http://localhost:3000/auth/refresh",
+        "https://devcon-swart.vercel.app/auth/refresh",
         {},
         { withCredentials: true }
       );
