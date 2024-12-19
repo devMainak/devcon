@@ -115,7 +115,7 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center mt-3">
           {loading && (
             <div class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
