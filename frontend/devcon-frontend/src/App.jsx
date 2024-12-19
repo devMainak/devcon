@@ -1,3 +1,4 @@
+import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Outlet } from "react-router-dom";
@@ -29,13 +30,7 @@ function App() {
           <SideNav />
         </div>
           <div
-            style={{
-              width: "35vw",
-              marginTop: "30px",
-              marginBottom: "0.5in",
-              marginLeft: "6in",
-              flexGrow: "1"
-            }}
+           className="main-view"
           >
             <Outlet />
           </div>
