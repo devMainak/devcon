@@ -10,7 +10,7 @@ const app = express();
 
 // cors config
 const corsOptions = {
-  origin: 'https://devconweb.vercel.app/',
+  origin: 'https://devconweb.vercel.app',
   credentials: true,
 };
 
