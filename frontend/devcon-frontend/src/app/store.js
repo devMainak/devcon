@@ -1,38 +1,40 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage
-import { persistStore, persistReducer } from 'redux-persist'
-import { postsSlice } from '../features/posts/postsSlice'
-import { usersSlice } from '../features/users/usersSlice'
-import { staticUserSlice } from '../components/user/staticUserSlice'
-import { bookmarksSlice } from '../features/bookmarks/bookmarksSlice'
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage
+import { persistStore, persistReducer } from "redux-persist";
+import  postsReducer  from "../features/posts/postsSlice";
+import  usersReducer from "../features/users/usersSlice";
+import  staticUserReducer from "../components/user/staticUserSlice";
+import  bookmarksReducer from "../features/bookmarks/bookmarksSlice";
+import  authReducer  from "../features/auth/authSlice"
 
 // Defining persist config
 const persistConfig = {
-    key: 'root',
-    storage,
-    whitelist: ['posts', 'users', 'staticUser', 'bookmarks']
-}
+  key: "root",
+  storage,
+  whitelist: ["auth", "posts", "users", "staticUser", "bookmarks"],
+};
 
 // Combining reducers
 const rootReducer = combineReducers({
-    posts: postsSlice.reducer,
-    users: usersSlice.reducer,
-    staticUser: staticUserSlice.reducer,
-    bookmarks: bookmarksSlice.reducer
-})
+  auth: authReducer,
+  posts: postsReducer,
+  users: usersReducer,
+  staticUser: staticUserReducer,
+  bookmarks: bookmarksReducer,
+});
 
 // Creating persisted reducer
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Configuring the store with persisted reducer
 const store = configureStore({
-    reducer: persistedReducer
-})
+  reducer: persistedReducer,
+});
 
 // Creating persistor
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
 // For making the store fluid
 // persistor.purge()
 
-export default store
+export default store;

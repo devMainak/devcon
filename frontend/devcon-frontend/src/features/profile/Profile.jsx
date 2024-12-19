@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import { saveProfileData } from "../../components/user/staticUserSlice";
-import SideNav from "../../components/nav/SideNav";
-import FollowList from "../../components/user/FollowList";
 import PostList from "../../components/post/PostList";
+import { updateUserProfileAsync } from "../users/usersSlice";
+import { updateUserDetails } from "../auth/authSlice";
 
 const Profile = () => {
   // Configuring use dispatch
@@ -11,46 +12,101 @@ const Profile = () => {
 
   // Accressing user and posts
   const { posts } = useSelector((state) => state.posts);
-  const { user } = useSelector((state) => state.staticUser);
+  const { user } = useSelector((state) => state.auth);
+  const { users } = useSelector((state) => state.users);
+
+  // Finding the current user
+  const currUser = users.find((person) => person._id === user._id);
 
   // Local State bindings
-  const [bio, setBio] = useState(user.profileBio);
+  const [bio, setBio] = useState(user.profileBio ? user.profileBio : " ");
   const [avater, setAvater] = useState(user.userImageUrl);
   const [editMode, setEditMode] = useState(false);
+  const [media, setMedia] = useState(null);
+
+  // Bindings for cloud file storage
+  const url = "https://api.cloudinary.com/v1_1/dase6jnks/upload";
+  const preset = "myCloud";
+
+  // Handle files
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMedia(file);
+      setAvater(URL.createObjectURL(file));
+    }
+  };
+
+  // Creating a post
+  const handlePostubmit = async (e) => {
+    e.preventDefault();
+    setPostButton("Posting");
+  };
 
   // Function to enable edit move
   const handleEnableEditMode = () => {
     setEditMode(true);
   };
 
-  // Handle avater selection
-  const handleAvatarSelection = (avatarId) => {
-    const newImageUrl = user.userImageAvatars.find(
-      (avater) => avater.id === avatarId
-    );
-    setAvater(newImageUrl.url);
-  };
-
   // Handle edit profile
-  const handleEditProfile = () => {
-    if (bio && avater) {
-      dispatch(saveProfileData({ profileBio: bio, userImageUrl: avater }));
-    } else {
-      setBio(" ");
+  const handleEditProfile = async () => {
+    const formData = new FormData();
+    formData.append("file", media);
+    formData.append("upload_preset", preset);
+    try {
+      if (media) {
+        const res = await axios.post(url, formData);
+        const mediaUrl = res.data.secure_url;
+        if (bio && mediaUrl) {
+          const userId = user._id;
+          const updatedData = {
+            profileBio: bio,
+            userImageUrl: mediaUrl,
+          };
+          const resultAction = await dispatch(
+            updateUserProfileAsync({ userId, updatedData })
+          );
+          if (updateUserProfileAsync.fulfilled.match(resultAction)) {
+            dispatch(updateUserDetails(updatedData));
+            setEditMode(false);
+          }
+        } else {
+          console.log("Nope!");
+          setEditMode(false);
+        }
+      } else {
+        if (bio) {
+          const userId = user._id;
+          const updatedData = {
+            userImageUrl: avater,
+            profileBio: bio,
+          };
+          const resultAction = await dispatch(
+            updateUserProfileAsync({ userId, updatedData })
+          );
+          if (updateUserProfileAsync.fulfilled.match(resultAction)) {
+            dispatch(updateUserDetails(updatedData));
+            setEditMode(false);
+          }
+        } else {
+          console.log("Nope!");
+          setEditMode(false);
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
     setEditMode(false);
   };
 
   // Total posts
   const totalPosts = posts.reduce((acc, curr) => {
-    if (curr.author.name === user.name) acc++;
+    if (curr.author._id === user._id) acc++;
     return acc;
   }, 0);
 
   // User posts
-  const userPosts = posts.filter(
-    (post) => post.author.username === user.username
-  );
+  const userPosts = posts.filter((post) => post.author._id === user._id);
 
   return (
     <div>
@@ -72,24 +128,25 @@ const Profile = () => {
           </div>
           <div className="fs-4 text-primary fw-semibold text-center">{`@${user.username}`}</div>
           <div className="mt-3" style={{ margin: "auto" }}>
-            <div className="fs-5">Choose an avatar:</div>
-            <div className="d-flex justify-content-around">
-              {user.userImageAvatars.map((avatar) => (
-                <div
-                  onClick={() => handleAvatarSelection(avatar.id)}
-                  key={avatar.id}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div>
-                    <img
-                      className="img-fluid"
-                      src={avatar.url}
-                      alt="Avater Img"
-                      style={{ maxHeight: "100px", maxWidth: "100px" }}
-                    />
-                  </div>
-                </div>
-              ))}
+            <div>
+              <div>
+                <label htmlFor="fileInput">
+                  <i
+                    className="fa-sharp fa-solid fa-camera-retro fs-5"
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                  <span className="px-2 fs-5 fw-semibold">
+                    : Upload Profile Picture
+                  </span>
+                </label>
+                <input
+                  onChange={handleFileChange}
+                  id="fileInput"
+                  accept="image/*"
+                  type="file"
+                  style={{ display: "none" }}
+                />
+              </div>
             </div>
           </div>
           <div className="mt-3">
@@ -99,7 +156,7 @@ const Profile = () => {
               className="p-2"
               rows={4}
               value={bio}
-              style={{ width: "100%" }}
+              style={{ width: "100%", borderRadius: "10px" }}
             ></textarea>
           </div>
           <div className="text-center mt-3" style={{ margin: "auto" }}>

@@ -14,7 +14,7 @@ const ExploreFeed = () => {
 
   // Accessing posts & user
   const { posts, status, error } = useSelector((state) => state.posts);
-  const { user } = useSelector((state) => state.staticUser);
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div>

@@ -82,7 +82,7 @@ const updatePostById = async (postId, post) => {
   try {
     const updatedPost = await Post.findByIdAndUpdate(postId, post, {
       new: true,
-    });
+    }).populate("author");
     return updatedPost;
   } catch (error) {
     console.error(error);
@@ -121,7 +121,7 @@ const likeAPost = async (postId, likedUserId) => {
         likes: updatedPostData,
       },
       { new: true }
-    );
+    ).populate("author");
     return updatedPost;
   } catch (error) {
     throw error;
@@ -152,7 +152,7 @@ const dislikeAPost = async (postId, dislikedUserId) => {
       postId,
       { $pull: { likes: dislikedUserId } },
       { new: true }
-    );
+    ).populate("author");
 
     return updatedPost;
   } catch (error) {

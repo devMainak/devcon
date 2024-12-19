@@ -175,3 +175,40 @@ exports.unfollowUser = async (req, res) => {
     res.status(500).json({ error: "Failed to complete the unfollow request." });
   }
 };
+
+// Function to update user details
+const updateUserDetails = async (userId, updatedData) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updatedData },
+      { new: true }
+    );
+
+    return updatedUser;
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user details." });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  const userId = req.params.userId;
+  const { updatedData } = req.body;
+  
+  try {
+    const updatedUser = await updateUserDetails(userId, updatedData);
+
+    if (updatedUser) {
+      res
+      .status(200)
+      .json({ message: "Updated user details", updatedUser })
+    } else {
+      res
+      .status(400)
+      .json({ message: "Failed to update user details" })
+    }
+
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user details." })
+  }
+}

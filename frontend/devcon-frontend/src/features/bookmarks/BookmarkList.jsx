@@ -1,20 +1,22 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeBookmarkAsync } from "./bookmarksSlice";
 import { unmarkAsBookmarked } from "../posts/postsSlice";
 
 const BookmarkList = ({ bookmarks }) => {
-    // Configuring useDispatch request
-    const dispatch = useDispatch()
+  // Configuring useDispatch request
+  const dispatch = useDispatch();
 
-    // Function to remove bookmark
+  // Accessing user
+  const { user } = useSelector((state) => state.auth);
+  const userId = user._id;
+  // Function to remove bookmark
   const handleBookmarkRemove = async (postId) => {
-    
     try {
       const resultAction = await dispatch(
-        removeBookmarkAsync(postId)
+        removeBookmarkAsync({ postId, userId })
       ).unwrap();
       if (removeBookmarkAsync.fulfilled.match(resultAction)) {
-        dispatch(unmarkAsBookmarked(postId));
+        dispatch(unmarkAsBookmarked({ postId, userId }));
       }
     } catch (error) {
       console.error(error);

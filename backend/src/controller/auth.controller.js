@@ -53,7 +53,9 @@ exports.login = async (req, res) => {
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
       });
       res
         .status(200)
@@ -69,7 +71,9 @@ exports.login = async (req, res) => {
 
 // Refresh Token Controller
 exports.refreshToken = async (req, res) => {
+  console.log("Cookies received:", req.cookies);
   const { refreshToken } = req.cookies;
+  console.log("Refresh Token Cookie:", refreshToken);
 
   if (!refreshToken) {
     return res.status(403).json({ message: "Refresh token required" });
@@ -90,7 +94,7 @@ exports.refreshToken = async (req, res) => {
     // Generate a new access token
     const accessToken = jwt.sign({ id: user._id }, JWT_ACCESS_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES,
-    }); 
+    });
     res.json({ token: accessToken, user });
   } catch (err) {
     return res.status(403).json({ message: "Invalid refresh token" });

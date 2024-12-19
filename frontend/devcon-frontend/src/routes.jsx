@@ -4,18 +4,43 @@ import Profile from "./features/profile/Profile";
 import BookmarkView from "./features/bookmarks/BookmarkView";
 import ExploreFeed from "./features/explore/ExploreFeed";
 import CreatePost from "./components/post/CreatePost";
+import Login from "./features/login/Login";
+import Register from "./features/register/Register";
+import AuthLayout from "./components/auth/AuthLayout";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Defining routes
 const routes = [
+  // Public Routes
   {
     path: "/",
-    // The main wrapper
-    element: <App />,
+    element: <AuthLayout />,
     children: [
       {
-        path: "/",
+        element: <Login />,
+        index: true,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Register />,
+      },
+    ],
+  },
+  // Protected Routes
+  {
+    path: "/user",
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
         element: <Feed />,
-        // This renders <Feed/> at the root path
         index: true,
       },
       {
@@ -32,8 +57,8 @@ const routes = [
       },
       {
         path: "create",
-        element: <CreatePost/>
-      }
+        element: <CreatePost />,
+      },
     ],
   },
 ];

@@ -14,6 +14,7 @@ const readAllBookmarks = async () => {
 exports.getBookmarks = async (req, res) => {
   try {
     const bookmarks = await readAllBookmarks();
+    console.log("bookmarks:", bookmarks);
     if (bookmarks) {
       res.status(200).json({
         message: "Bookmarks fetched successfully.",
@@ -29,18 +30,14 @@ exports.getBookmarks = async (req, res) => {
 };
 
 // Function to add post bookmarks
-const saveBookmark = async (postId) => {
+const saveBookmark = async (postId, userId) => {
   try {
-    const postToSave = new Bookmark({
-      bookmarkedPost: postId,
-    });
-    const bookmarkedPost = await postToSave.save();
-    await bookmarkedPost.populate("bookmarkedPost");
+    const bookmarkedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $addToSet: { bookmarks: userId } },
+      { new: true }
+    ).populate("author");
 
-    // Update the status of the post
-    await Post.findByIdAndUpdate(postId, {
-      isBookmarked: true,
-    });
     return bookmarkedPost;
   } catch (error) {
     throw new Error(error);
@@ -49,14 +46,15 @@ const saveBookmark = async (postId) => {
 
 exports.addBookmark = async (req, res) => {
   const postId = req.params.postId;
+  const { userId } = req.body;
   try {
-    const bookmarkedPost = await saveBookmark(postId);
+    const bookmarkedPost = await saveBookmark(postId, userId);
     if (bookmarkedPost) {
       res
         .status(201)
         .json({ message: "Post bookmarked.", bookmarkedPost: bookmarkedPost });
     } else {
-      res.status(400).json({ message: "Failed to bookmark." });
+      res.status(400).json({ message: "Failed to add bookmark." });
     }
   } catch (error) {
     console.error(error);
@@ -65,14 +63,16 @@ exports.addBookmark = async (req, res) => {
 };
 
 // Function to remove post from bookmarks
-const removeBookmark = async (postId) => {
+const removeBookmark = async (postId, userId) => {
+  console.log(postId, userId);
   try {
-    const unBookmarkedPost = await Bookmark.findByIdAndDelete(postId);
-    const originalPostId = unBookmarkedPost.bookmarkedPost._id;
-    await Post.findByIdAndUpdate(originalPostId, {
-      isBookmarked: false,
-    });
-    return unBookmarkedPost;
+    const unbookmarkedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $pull: { bookmarks: userId } },
+      { new: true }
+    ).populate("author");
+    console.log(unbookmarkedPost);
+    return unbookmarkedPost;
   } catch (error) {
     throw new Error(error);
   }
@@ -80,15 +80,16 @@ const removeBookmark = async (postId) => {
 
 exports.deleteBookmark = async (req, res) => {
   const postId = req.params.postId;
+  const { userId } = req.body;
   try {
-    const unBookmarkedPost = await removeBookmark(postId);
+    const unBookmarkedPost = await removeBookmark(postId, userId);
     if (unBookmarkedPost) {
       res.status(200).json({
         message: "Bookmarked removed successfully.",
         unBookmarkedPost: unBookmarkedPost,
       });
     } else {
-      res.status(400).json({ message: "Failed remove bookmark." });
+      res.status(400).json({ message: "Failed to remove bookmark." });
     }
   } catch (error) {
     console.error(error);

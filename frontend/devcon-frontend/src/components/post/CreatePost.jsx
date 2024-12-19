@@ -8,8 +8,8 @@ const CreatePost = () => {
   const dispatch = useDispatch();
 
   // Accessing staticUser
-  const { user } = useSelector((state) => state.staticUser);
-
+  const { user } = useSelector((state) => state.auth);
+  
   // State bindings for form data
   const [content, setContent] = useState("");
   const [media, setMedia] = useState(null);
@@ -49,11 +49,7 @@ const CreatePost = () => {
         const mediaUrl = res.data.secure_url;
         if (content && mediaUrl && fileType && user) {
           const post = {
-            author: {
-              name: user.name,
-              username: user.username,
-              userImageUrl: user.userImageUrl,
-            },
+            author: user._id,
             content,
             media: [{ url: mediaUrl, type: fileType }],
           };
@@ -80,11 +76,7 @@ const CreatePost = () => {
       } else {
         if (content && user) {
           const post = {
-            author: {
-              name: user.name,
-              username: user.username,
-              userImageUrl: user.userImageUrl,
-            },
+            author: user._id,
             content,
           };
           const resultAction = await dispatch(addPostAsync(post));

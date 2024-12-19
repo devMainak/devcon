@@ -5,7 +5,11 @@ const mongoose = require("mongoose");
 // Defining Posts mongoose schema
 const postSchema = new mongoose.Schema(
   {
-    author: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
+    },
     content: {
       type: String,
       trim: true,
@@ -32,10 +36,12 @@ const postSchema = new mongoose.Schema(
         ref: "users",
       },
     ],
-    isBookmarked: {
-      type: Boolean,
-      default: false,
-    },
+    bookmarks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+      },
+    ],
   },
   { timestamps: true }
 );

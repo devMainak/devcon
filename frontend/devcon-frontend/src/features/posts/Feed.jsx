@@ -21,7 +21,7 @@ const Feed = () => {
   );
 
   // Accessing staticUser
-  const { user } = useSelector((state) => state.staticUser);
+  const { user } = useSelector((state) => state.auth);
 
   // Handle sort by likes
   const handleSortByLikes = () => {
@@ -37,14 +37,19 @@ const Feed = () => {
   const postsToShow = [...posts];
 
   // Sorted posts by user or user's following
+  console.log(postsToShow)
+  console.log(user)
   const userAndFollowingPosts = postsToShow.filter((post) => {
+    console.log(post)
     if (
-      post.author.username === user.username ||
-      user.following.includes(post.author.username)
+      post.author._id === user._id ||
+      user.following.includes(post.author._id)
     ) {
       return post;
     }
   });
+
+  console.log(userAndFollowingPosts)
 
   // Sorted posts by likes
   const sortedPostsByLikes =
@@ -61,7 +66,6 @@ const Feed = () => {
       : sortedPostsByLikes.sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
-
 
   return (
     <div>

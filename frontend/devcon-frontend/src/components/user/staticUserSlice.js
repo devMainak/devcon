@@ -49,19 +49,12 @@ export const staticUserSlice = createSlice({
         userImageUrl: action.payload.userImageUrl,
       };
     },
-    // For adding follower
-    addNewFollower: (state, action) => {
-      state.user.following.push(action.payload)
-    }, 
-    // For removing follower
-    removeExistingFollower: (state, action) => {
-      state.user.following = state.user.following.filter(followed => followed !== action.payload)
-    }
+   
   },
 });
 
 // Exporting action creator functions
-export const { saveProfileData, addNewFollower, removeExistingFollower } = staticUserSlice.actions;
+export const { saveProfileData } = staticUserSlice.actions;
 
 // Exporting default reducers
 export default staticUserSlice.reducer;

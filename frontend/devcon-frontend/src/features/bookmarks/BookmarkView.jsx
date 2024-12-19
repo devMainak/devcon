@@ -12,8 +12,12 @@ const BookmarkView = () => {
     dispatch(fetchBookmarkAsync());
   }, []);
 
-  // Accessing bookmarks
+  // Accessing posts & user
   const { bookmarks, status, error } = useSelector((state) => state.bookmarks);
+  const { user } = useSelector((state) => state.auth);
+
+  // Filtering user bookmarks
+  const userBookmarks = bookmarks.filter((post) => post.bookmarks.includes(user._id));
 
   return (
     <div>
@@ -29,9 +33,9 @@ const BookmarkView = () => {
       )}
       {error && <p className="fs-4 fw-semibold text-center">{error}</p>}
 
-      {bookmarks && bookmarks.length > 0 ? (
+      {userBookmarks && userBookmarks.length > 0 ? (
         <div>
-          <BookmarkList bookmarks={bookmarks} />
+          <BookmarkList bookmarks={userBookmarks} />
         </div>
       ) : (
         <p className="fs-3 fw-semibold text-center">No bookmarks.</p>

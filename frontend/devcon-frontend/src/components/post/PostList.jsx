@@ -14,7 +14,6 @@ import {
   removeBookmarkAsync,
 } from "../../features/bookmarks/bookmarksSlice";
 
-
 const PostList = ({ posts, user }) => {
   // Configuring useDispatch for usage
   const dispatch = useDispatch();
@@ -23,9 +22,6 @@ const PostList = ({ posts, user }) => {
   useEffect(() => {
     dispatch(fetchBookmarkAsync());
   }, []);
-
-  // Accessing bookmarks
-  const { bookmarks } = useSelector((state) => state.bookmarks);
 
   // Local state to handle edit mode
   const [editingPostId, setEditingPostId] = useState(null);
@@ -71,19 +67,21 @@ const PostList = ({ posts, user }) => {
 
   // Function handle liking or disliking a post a post
   const handleLiking = (post) => {
-    if (!post.isLiked) {
-      dispatch(likePostAsync({ postId: post._id, post }));
+    if (!post.likes.includes(user._id)) {
+      dispatch(likePostAsync({ postId: post._id, user }));
     } else {
-      dispatch(dislikePostAsync({ postId: post._id, post }));
+      dispatch(dislikePostAsync({ postId: post._id, user }));
     }
   };
 
   // Function to add bookmark
   const handleBookmarkAdd = async (post) => {
     try {
-      const resultAction = await dispatch(addBookmarkAsync(post));
+      const postId = post._id;
+      const userId = user._id;
+      const resultAction = await dispatch(addBookmarkAsync({ postId, userId }));
       if (addBookmarkAsync.fulfilled.match(resultAction)) {
-        dispatch(markAsBookmarked(post._id));
+        dispatch(markAsBookmarked({ postId, userId }));
       }
     } catch (error) {
       console.error(error);
@@ -93,9 +91,12 @@ const PostList = ({ posts, user }) => {
   // Function to remove bookmark
   const handleBookmarkRemove = async (postId) => {
     try {
-      const resultAction = await dispatch(removeBookmarkAsync(postId));
+      const userId = user._id;
+      const resultAction = await dispatch(
+        removeBookmarkAsync({ postId, userId })
+      );
       if (removeBookmarkAsync.fulfilled.match(resultAction)) {
-        dispatch(unmarkAsBookmarked(postId));
+        dispatch(unmarkAsBookmarked({ postId, userId }));
       }
     } catch (error) {
       console.error(error);
@@ -104,7 +105,7 @@ const PostList = ({ posts, user }) => {
 
   // Handle bookmark click
   const handleBookmarkClick = (post) => {
-    if (!post.isBookmarked) {
+    if (!post.bookmarks.includes(user._id)) {
       handleBookmarkAdd(post);
     } else {
       handleBookmarkRemove(post._id);
@@ -115,13 +116,15 @@ const PostList = ({ posts, user }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
-      month: "long", // Full moth name
+      month: "long", // Full month name
       day: "numeric", // Numeric day
       hour: "numeric", // Numeric hour
       minute: "numeric", // Numeric minute
       hour12: true, // 12-hour format
     });
   };
+
+  console.log(posts);
 
   return (
     <div>
@@ -232,13 +235,16 @@ const PostList = ({ posts, user }) => {
                   >
                     <i
                       className={
-                        post.isLiked
+                        post.likes.includes(user._id)
                           ? "fa-sharp fa-solid fa-heart fs-4"
                           : "fa-sharp fa-regular fa-heart fs-4"
                       }
-                    ></i>
-                    {" "}
-                    {post.likes > 0 ? <span className="fs-4">{post.likes}</span> : ``}
+                    ></i>{" "}
+                    {post.likes.length > 0 ? (
+                      <span className="fs-4">{post.likes.length}</span>
+                    ) : (
+                      ``
+                    )}
                   </button>
                 </div>
                 <div>
@@ -268,7 +274,7 @@ const PostList = ({ posts, user }) => {
                   >
                     <i
                       className={
-                        post.isBookmarked
+                        post.bookmarks.includes(user._id)
                           ? "fa-sharp fa-solid fa-bookmark fs-5"
                           : "fa-sharp fa-regular fa-bookmark fs-5"
                       }
