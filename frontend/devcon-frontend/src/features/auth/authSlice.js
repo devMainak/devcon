@@ -115,7 +115,6 @@ const authSlice = createSlice({
     });
     builder.addCase(loginAsync.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action);
       state.token = action.payload.token;
       state.user = action.payload.user;
       state.isAuthenticated = true;
@@ -123,7 +122,6 @@ const authSlice = createSlice({
     builder.addCase(loginAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload.error || "Login failed";
-      console.log(state.error)
     });
 
     // Register cases

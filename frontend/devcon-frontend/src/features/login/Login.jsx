@@ -6,7 +6,7 @@ import { loginAsync, refreshTokenAsync, resetError } from "../auth/authSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState("");
@@ -33,16 +33,15 @@ const Login = () => {
 
     try {
       const resultAction = await dispatch(loginAsync(credentials));
-      console.log(resultAction);
       if (loginAsync.fulfilled.match(resultAction)) {
         navigate("/user");
-      } else if (auth.error) {
-        setAlert(auth.error);
-        setTimeout(() => setAlert(""), 2000);
+      } else if (loginAsync.rejected.match(resultAction)) {
+        setAlert(resultAction.payload.error);
+        setTimeout(() => setAlert(""), 3000);
       }
     } catch (error) {
-      setAlert(auth.error);
-      setTimeout(() => setAlert(""), 2000);
+      setAlert(error);
+      setTimeout(() => setAlert(""), 3000);
     }
   };
 
@@ -92,7 +91,7 @@ const Login = () => {
           </div>
         </div>
         <div className="d-flex justify-content-center">
-          {auth.loading && (
+          {loading && (
             <div
               className="spinner-border text-primary text-center my-3"
               role="status"
@@ -100,7 +99,11 @@ const Login = () => {
               <span className="visually-hidden">Loading...</span>
             </div>
           )}
-          {alert && <p className="text-danger">{alert}</p>}
+          {alert && (
+            <div className="alert alert-danger mt-3 fw-semibold" role="alert">
+              {alert}
+            </div>
+          )}
         </div>
       </div>
     </div>
