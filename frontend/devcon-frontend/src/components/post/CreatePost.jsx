@@ -127,13 +127,13 @@ const CreatePost = () => {
                     <img
                       src={mediaPerview}
                       alt="Preview"
-                      style={{ maxHeight: "250px", minWidth: "100%" }}
+                      style={{ maxHeight: "250px", width: "100%" }}
                     />
                   )}
                   {fileType === "video" && (
                     <video
                       controls
-                      style={{ maxHeight: "250px", minWidth: "100%" }}
+                      style={{ maxHeight: "250px", width: "100%" }}
                     >
                       <source src={mediaPerview} type="video/mp4" />
                       Your browser does not support the video tag.
