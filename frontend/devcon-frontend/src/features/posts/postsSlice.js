@@ -130,14 +130,9 @@ export const postsSlice = createSlice({
     posts: [],
     status: "idle",
     error: null,
-    sortByLike: "Most Liked",
     sortByDate: "",
   },
   reducers: {
-    // For handling sort by date
-    handleSortByLikes: (state, action) => {
-      state.sortByLike = action.payload;
-    },
     // For handling sort by date
     handleSortByDate: (state, action) => {
       state.sortByDate = action.payload;
@@ -176,7 +171,9 @@ export const postsSlice = createSlice({
     });
     // Success case for fetchPostsAsync
     builder.addCase(fetchPostsAsync.fulfilled, (state, action) => {
-      (state.status = "success"), (state.posts = action.payload.posts);
+      (state.status = "success"), (state.posts = action.payload.posts)
+      console.log(action.payload.posts)
+      ;
     });
     // Rajected case for fetchPostsAsync
     builder.addCase(fetchPostsAsync.rejected, (state, action) => {
@@ -223,7 +220,6 @@ export const postsSlice = createSlice({
 
 // Exporting the action creators
 export const {
-  handleSortByLikes,
   handleSortByDate,
   markAsBookmarked,
   unmarkAsBookmarked,

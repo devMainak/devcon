@@ -1,14 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchPostsAsync, handleSortByDate } from "./postsSlice";
+import {
+  fetchPostsAsync,
+  handleSortByDate,
+} from "./postsSlice";
 import PostList from "../../components/post/PostList";
 import CreatePost from "../../components/post/CreatePost";
 
 const Feed = () => {
+  const [showTrending, setShowTrending] = useState(false);
+
   // Configuring useDispatch() for usage
   const dispatch = useDispatch();
-
-  const [sortbyLikes, setSortByLikes] = useState("All Posts");
 
   // Fetching all posts on feed page load
   useEffect(() => {
@@ -23,13 +26,9 @@ const Feed = () => {
   // Accessing staticUser
   const { user } = useSelector((state) => state.auth);
 
-  // Handle sort by likes
-  const handleSortByLikes = () => {
-    setSortByLikes(sortbyLikes === "Most Liked" ? "All Posts" : "Most Liked");
-  };
-
   // Handle sort by date
   const setSortByDate = (e) => {
+    setShowTrending(false);
     dispatch(handleSortByDate(e.target.value));
   };
 
@@ -37,10 +36,8 @@ const Feed = () => {
   const postsToShow = [...posts];
 
   // Sorted posts by user or user's following
-  console.log(postsToShow)
-  console.log(user)
   const userAndFollowingPosts = postsToShow.filter((post) => {
-    console.log(post)
+    // console.log(post);
     if (
       post.author._id === user._id ||
       user.following.includes(post.author._id)
@@ -49,21 +46,17 @@ const Feed = () => {
     }
   });
 
-  console.log(userAndFollowingPosts)
+  // console.log(userAndFollowingPosts);
+  const sortedPostsByLikes = showTrending ?  [...userAndFollowingPosts].sort(
+    (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)
+  ) : [];
 
-  // Sorted posts by likes
-  const sortedPostsByLikes =
-    sortbyLikes === "All Posts"
-      ? userAndFollowingPosts
-      : userAndFollowingPosts.sort((a, b) => b.likes - a.likes);
-
-  // Sorted posts by date
   const sortedPostsByDate =
     sortByDate && sortByDate === "recent"
-      ? sortedPostsByLikes.sort(
+      ? [...userAndFollowingPosts].sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )
-      : sortedPostsByLikes.sort(
+      : [...userAndFollowingPosts].sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
 
@@ -86,9 +79,9 @@ const Feed = () => {
           <div className="d-flex pb-3" style={{ gap: "10px" }}>
             <button
               className="btn btn-light text-primary fw-semibold"
-              onClick={() => handleSortByLikes()}
+              onClick={() => setShowTrending(showTrending == false ? true : false)}
             >
-              {sortbyLikes}
+              {!showTrending ? "Trending" : "All Posts"}
             </button>
             <select
               className="form-select text-primary fw-semibold"
@@ -100,7 +93,7 @@ const Feed = () => {
               <option value="old">Old Posts</option>
             </select>
           </div>
-          <PostList posts={sortedPostsByDate} user={user} />
+          <PostList posts={ sortedPostsByLikes.length > 0 ? sortedPostsByLikes : sortedPostsByDate} user={user} />
         </div>
       ) : (
         <p className="fs-4 fw-semibold text-center">No posts found.</p>

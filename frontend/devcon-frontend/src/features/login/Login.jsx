@@ -36,11 +36,13 @@ const Login = () => {
       if (loginAsync.fulfilled.match(resultAction)) {
         navigate("/user");
       } else if (loginAsync.rejected.match(resultAction)) {
-        setAlert(resultAction.payload.error);
+        const errorMessage = resultAction.payload?.error || "Login failed";
+        setAlert(errorMessage);
         setTimeout(() => setAlert(""), 3000);
       }
     } catch (error) {
-      setAlert(error);
+      console.error("Login error:", error);
+      setAlert("An unexpected error occurred");
       setTimeout(() => setAlert(""), 3000);
     }
   };

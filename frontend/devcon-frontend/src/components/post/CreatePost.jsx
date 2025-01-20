@@ -9,7 +9,7 @@ const CreatePost = () => {
 
   // Accessing staticUser
   const { user } = useSelector((state) => state.auth);
-  
+
   // State bindings for form data
   const [content, setContent] = useState("");
   const [media, setMedia] = useState(null);
@@ -18,9 +18,9 @@ const CreatePost = () => {
   const [alert, setAlert] = useState("");
   const [postButton, setPostButton] = useState("Post");
 
-   // Bindings for cloud file storage
-   const url = "https://api.cloudinary.com/v1_1/dase6jnks/upload";
-   const preset = "myCloud";
+  // Bindings for cloud file storage
+  const url = import.meta.env.VITE_CLOUDINARY_URL;
+  const preset = import.meta.env.VITE_UPLOAD_PRESET;
 
   // Handle files
   const handleFileChange = (e) => {
