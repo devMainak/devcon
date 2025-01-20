@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import createApiClient from "../../utils/apiClient";
 
-// Async thunk for login
 export const loginAsync = createAsyncThunk(
   "auth/login",
   async (authCredentials, { rejectWithValue }) => {
@@ -19,7 +18,6 @@ export const loginAsync = createAsyncThunk(
   }
 );
 
-// Async thunk for register
 export const registerAsync = createAsyncThunk(
   "auth/register",
   async (newUser, { rejectWithValue }) => {
@@ -35,12 +33,10 @@ export const registerAsync = createAsyncThunk(
   }
 );
 
-// Async thuk for refreshing the access token
 export const refreshTokenAsync = createAsyncThunk(
   "auth/refresh",
   async (_, { rejectWithValue }) => {
     try {
-      // const apiClient = createApiClient();
       const response = await axios.post(
         "https://devcon-swart.vercel.app/auth/refresh",
         {},
@@ -53,12 +49,11 @@ export const refreshTokenAsync = createAsyncThunk(
   }
 );
 
-// Async function to log out the user
 export const logoutAsync = createAsyncThunk(
   "auth/logout",
   async (_, { getState, dispatch, rejectWithValue }) => {
     const state = getState();
-    const token = state.auth.token; // Retrieve token if required
+    const token = state.auth.token;
     const apiClient = createApiClient(token, dispatch);
 
     try {
@@ -66,7 +61,7 @@ export const logoutAsync = createAsyncThunk(
         "/auth/logout",
         {},
         { withCredentials: true }
-      ); // Clear refresh token on the backend
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue({
@@ -90,17 +85,14 @@ const authSlice = createSlice({
     resetError: (state) => {
       state.error = null;
     },
-    // For adding follower
     addNewFollower: (state, action) => {
       state.user.following.push(action.payload.followedUserId);
     },
-    // For removing follower
     removeExistingFollower: (state, action) => {
       state.user.following = state.user.following.filter(
         (userId) => userId !== action.payload.unfollowedUserId
       );
     },
-    // For updating user details
     updateUserDetails: (state, action) => {
       const { profileBio, userImageUrl } = action.payload;
       state.user.profileBio = profileBio;
@@ -120,7 +112,6 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
     });
     builder.addCase(loginAsync.rejected, (state, action) => {
-      
       state.loading = false;
       state.error = action.payload?.error || "Login failed";
     });
@@ -147,7 +138,7 @@ const authSlice = createSlice({
     builder.addCase(refreshTokenAsync.rejected, (state) => {
       state.user = null;
       state.token = null;
-      state.isAuthenticated = false; // Reset auth state on refresh failure
+      state.isAuthenticated = false;
       state.loading = false;
     });
 

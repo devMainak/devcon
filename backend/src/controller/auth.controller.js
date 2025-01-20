@@ -3,11 +3,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const RefreshToken = require("../models/refreshToken.model");
 
-// Secret key for JWT
 const JWT_ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const JWT_REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-// Secret key for token expire duration
 const ACCESS_TOKEN_EXPIRES = process.env.ACCESS_TOKEN_EXPIRES;
 const REFRESH_TOKEN_EXPIRES = process.env.REFRESH_TOKEN_EXPIRES;
 
@@ -85,13 +83,10 @@ exports.refreshToken = async (req, res) => {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
 
-    // Verify the refresh token
     const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
-    // Fetch user details
     const user = await User.findById(tokenDoc.userId);
 
-    // Generate a new access token
     const accessToken = jwt.sign({ id: user._id }, JWT_ACCESS_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRES,
     });
@@ -109,7 +104,6 @@ exports.logout = async (req, res) => {
     return res.status(400).json({ message: "No token provided" });
   }
 
-  // Delete the refresh token from the database
   await RefreshToken.findOneAndDelete({ token: refreshToken });
 
   res.clearCookie("refreshToken");

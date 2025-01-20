@@ -4,12 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerAsync } from "../auth/authSlice";
 
 const Register = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  // Accessing auth details
-  const { loading } = useSelector((state) => state.auth);
-
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,10 +11,13 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [alert, setAlert] = useState("");
 
-  // Function to handle new user registration
-  const handleRegistration = async (e) => {
-    e.preventDefault(); // Prevent form default submission
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const { loading } = useSelector((state) => state.auth);
+
+  const handleRegistration = async (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
       setAlert("Passwords do not match!");
       setTimeout(() => setAlert(""), 2000);
@@ -32,7 +29,7 @@ const Register = () => {
       const resultAction = await dispatch(registerAsync(newUser));
 
       if (registerAsync.fulfilled.match(resultAction)) {
-        navigate("/login"); // Navigate to login on success
+        navigate("/login");
       } else {
         setAlert("Failed to register the new user!");
         setTimeout(() => setAlert(""), 2000);

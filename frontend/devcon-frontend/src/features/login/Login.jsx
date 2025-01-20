@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginAsync, refreshTokenAsync, resetError } from "../auth/authSlice";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.auth);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(refreshTokenAsync())
@@ -23,7 +25,7 @@ const Login = () => {
       });
 
     return () => {
-      dispatch(resetError()); // Clear error on unmount
+      dispatch(resetError());
     };
   }, [dispatch]);
 

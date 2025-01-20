@@ -4,15 +4,12 @@ import { fetchPostsAsync } from "../posts/postsSlice";
 import PostList from "../../components/post/PostList";
 
 const ExploreFeed = () => {
-  // Configuring useDispatch
   const dispatch = useDispatch();
 
-  // Fetching posts on page load
   useEffect(() => {
     dispatch(fetchPostsAsync());
   }, []);
 
-  // Accessing posts & user
   const { posts, status, error } = useSelector((state) => state.posts);
   const { user } = useSelector((state) => state.auth);
 

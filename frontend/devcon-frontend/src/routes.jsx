@@ -9,7 +9,6 @@ import Register from "./features/register/Register";
 import AuthLayout from "./components/auth/AuthLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
-// Defining routes
 const routes = [
   // Public Routes
   {
@@ -63,5 +62,4 @@ const routes = [
   },
 ];
 
-// Exporting routes
 export default routes;

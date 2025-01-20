@@ -4,13 +4,6 @@ import axios from "axios";
 import { addPostAsync } from "../../features/posts/postsSlice";
 
 const CreatePost = () => {
-  // Configuring useDispatch() for usage
-  const dispatch = useDispatch();
-
-  // Accessing staticUser
-  const { user } = useSelector((state) => state.auth);
-
-  // State bindings for form data
   const [content, setContent] = useState("");
   const [media, setMedia] = useState(null);
   const [fileType, setFileType] = useState("");
@@ -18,7 +11,9 @@ const CreatePost = () => {
   const [alert, setAlert] = useState("");
   const [postButton, setPostButton] = useState("Post");
 
-  // Bindings for cloud file storage
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
   const url = import.meta.env.VITE_CLOUDINARY_URL;
   const preset = import.meta.env.VITE_UPLOAD_PRESET;
 
@@ -56,11 +51,9 @@ const CreatePost = () => {
           const resultAction = await dispatch(addPostAsync(post));
           if (addPostAsync.fulfilled.match(resultAction)) {
             setPostButton("Post");
-            // Clearing the form
             setContent("");
             setMedia(null);
             setFileType("");
-            // Making the alert
             setAlert("Posted!");
             setTimeout(() => {
               setAlert("");
@@ -82,11 +75,9 @@ const CreatePost = () => {
           const resultAction = await dispatch(addPostAsync(post));
           if (addPostAsync.fulfilled.match(resultAction)) {
             setPostButton("Post");
-            // Clearing the form
             setContent("");
             setMedia(null);
             setFileType("");
-            // Making the alert
             setAlert("Posted!");
             setTimeout(() => {
               setAlert("");

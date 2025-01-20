@@ -5,7 +5,7 @@ const createApiClient = (token, dispatch) => {
   // Create an Axios instance
   const apiClient = axios.create({
     baseURL: "https://devcon-swart.vercel.app",
-    withCredentials: true, // Include cookies in requests
+    withCredentials: true,
   });
 
   // Request Interceptor to add Authorization header

@@ -11,22 +11,17 @@ import {
 } from "../../features/auth/authSlice";
 
 const FollowList = () => {
-  // Configuring useDispatch for usage
   const dispatch = useDispatch();
 
-  // Fetching users on load
   useEffect(() => {
     dispatch(fetchUsersAsync());
   }, []);
 
-  // Accessing users && followrs
   const { users } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
 
-  // User list except current user
   const filteredUsers = users.filter((currUser) => currUser._id !== user._id);
 
-  // Function follow user
   const handleFollowUser = async (followedUser) => {
     const userId = user._id;
     const followedUserId = followedUser._id;
@@ -66,6 +61,7 @@ const FollowList = () => {
             <div
               className="d-flex justify-content-between mt-2"
               style={{ flexWrap: "wrap" }}
+              key={currUser._id}
             >
               <div className="d-flex" style={{ flexWrap: "wrap", gap: "1rem" }}>
                 <img
@@ -87,7 +83,9 @@ const FollowList = () => {
                   className="btn btn-primary my-2"
                 >
                   {" "}
-                  {user.following.includes(currUser._id) ? "Unfollow" : "+ Follow"}
+                  {user.following.includes(currUser._id)
+                    ? "Unfollow"
+                    : "+ Follow"}
                 </button>
               </div>
             </div>

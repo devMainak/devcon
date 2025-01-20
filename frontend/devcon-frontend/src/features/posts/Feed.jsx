@@ -1,43 +1,32 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import {
-  fetchPostsAsync,
-  handleSortByDate,
-} from "./postsSlice";
+import { fetchPostsAsync, handleSortByDate } from "./postsSlice";
 import PostList from "../../components/post/PostList";
 import CreatePost from "../../components/post/CreatePost";
 
 const Feed = () => {
   const [showTrending, setShowTrending] = useState(false);
 
-  // Configuring useDispatch() for usage
   const dispatch = useDispatch();
 
-  // Fetching all posts on feed page load
   useEffect(() => {
     dispatch(fetchPostsAsync());
   }, []);
 
-  // Accessing posts
   const { posts, status, error, sortByDate } = useSelector(
     (state) => state.posts
   );
 
-  // Accessing staticUser
   const { user } = useSelector((state) => state.auth);
 
-  // Handle sort by date
   const setSortByDate = (e) => {
     setShowTrending(false);
     dispatch(handleSortByDate(e.target.value));
   };
 
-  // Creating a copy of posts
   const postsToShow = [...posts];
 
-  // Sorted posts by user or user's following
   const userAndFollowingPosts = postsToShow.filter((post) => {
-    // console.log(post);
     if (
       post.author._id === user._id ||
       user.following.includes(post.author._id)
@@ -46,10 +35,11 @@ const Feed = () => {
     }
   });
 
-  // console.log(userAndFollowingPosts);
-  const sortedPostsByLikes = showTrending ?  [...userAndFollowingPosts].sort(
-    (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)
-  ) : [];
+  const sortedPostsByLikes = showTrending
+    ? [...userAndFollowingPosts].sort(
+        (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)
+      )
+    : [];
 
   const sortedPostsByDate =
     sortByDate && sortByDate === "recent"
@@ -79,7 +69,9 @@ const Feed = () => {
           <div className="d-flex pb-3" style={{ gap: "10px" }}>
             <button
               className="btn btn-light text-primary fw-semibold"
-              onClick={() => setShowTrending(showTrending == false ? true : false)}
+              onClick={() =>
+                setShowTrending(showTrending == false ? true : false)
+              }
             >
               {!showTrending ? "Trending" : "All Posts"}
             </button>
@@ -93,7 +85,14 @@ const Feed = () => {
               <option value="old">Old Posts</option>
             </select>
           </div>
-          <PostList posts={ sortedPostsByLikes.length > 0 ? sortedPostsByLikes : sortedPostsByDate} user={user} />
+          <PostList
+            posts={
+              sortedPostsByLikes.length > 0
+                ? sortedPostsByLikes
+                : sortedPostsByDate
+            }
+            user={user}
+          />
         </div>
       ) : (
         <p className="fs-4 fw-semibold text-center">No posts found.</p>

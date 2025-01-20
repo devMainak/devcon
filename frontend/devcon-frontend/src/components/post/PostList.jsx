@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   dislikePostAsync,
   likePostAsync,
@@ -15,25 +15,20 @@ import {
 } from "../../features/bookmarks/bookmarksSlice";
 
 const PostList = ({ posts, user }) => {
-  // Configuring useDispatch for usage
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editedContent, setEditedContent] = useState("");
+
   const dispatch = useDispatch();
 
-  // Loading bookmarks for validation
   useEffect(() => {
     dispatch(fetchBookmarkAsync());
   }, []);
 
-  // Local state to handle edit mode
-  const [editingPostId, setEditingPostId] = useState(null);
-  const [editedContent, setEditedContent] = useState("");
-
-  // Function to toggle edit mode
   const handleEditPost = (post) => {
     setEditingPostId(post._id);
     setEditedContent(post.content);
   };
 
-  // Function to submit edited post
   const handleEditSubmit = async (post) => {
     try {
       if (editedContent) {
@@ -42,7 +37,6 @@ const PostList = ({ posts, user }) => {
         await dispatch(
           updatePostAsync({ postId: post._id, post: updatedPost })
         ).unwrap();
-        // Exit edit mode
         setEditingPostId(null);
       }
     } catch (error) {
@@ -50,13 +44,11 @@ const PostList = ({ posts, user }) => {
     }
   };
 
-  // Function to cancel edit mode
   const handleCancelEdit = () => {
     setEditingPostId(null);
     setEditedContent("");
   };
 
-  // Function to handle delete post
   const handleDeletePost = async (postId) => {
     try {
       await dispatch(deletePostAsync(postId)).unwrap();
@@ -65,7 +57,6 @@ const PostList = ({ posts, user }) => {
     }
   };
 
-  // Function handle liking or disliking a post a post
   const handleLiking = (post) => {
     if (!post.likes.includes(user._id)) {
       dispatch(likePostAsync({ postId: post._id, user }));
@@ -74,7 +65,6 @@ const PostList = ({ posts, user }) => {
     }
   };
 
-  // Function to add bookmark
   const handleBookmarkAdd = async (post) => {
     try {
       const postId = post._id;
@@ -88,7 +78,6 @@ const PostList = ({ posts, user }) => {
     }
   };
 
-  // Function to remove bookmark
   const handleBookmarkRemove = async (postId) => {
     try {
       const userId = user._id;
@@ -103,7 +92,6 @@ const PostList = ({ posts, user }) => {
     }
   };
 
-  // Handle bookmark click
   const handleBookmarkClick = (post) => {
     if (!post.bookmarks.includes(user._id)) {
       handleBookmarkAdd(post);
@@ -112,19 +100,16 @@ const PostList = ({ posts, user }) => {
     }
   };
 
-  // Function to format date in the posts
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
-      month: "long", // Full month name
-      day: "numeric", // Numeric day
-      hour: "numeric", // Numeric hour
-      minute: "numeric", // Numeric minute
-      hour12: true, // 12-hour format
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
     });
   };
-
-  console.log(posts);
 
   return (
     <div>

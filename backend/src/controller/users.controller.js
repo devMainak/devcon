@@ -58,11 +58,9 @@ exports.createUser = async (req, res) => {
 // Function to follow a user in the database
 const updateUserBeingFollowed = async ({ followedId, userId }) => {
   try {
-    // Convert IDs to ObjectId to ensure compatibility
     const followedObjectId = new mongoose.Types.ObjectId(followedId);
     const userObjectId = new mongoose.Types.ObjectId(userId);
 
-    // Check if both users exist in the database before proceeding with the update
     const existingUser = await User.findById(userObjectId);
     const existingFollowedUser = await User.findById(followedObjectId);
 
@@ -75,15 +73,12 @@ const updateUserBeingFollowed = async ({ followedId, userId }) => {
       return { message: "Followed user not found" };
     }
 
-    // Update the user's following list
     const updatedUser = await User.findByIdAndUpdate(
       userObjectId,
       { $addToSet: { following: followedObjectId } },
       { new: true }
     );
-    console.log("Updated user following:", updatedUser);
 
-    // Update the followed user's followers list
     const updatedFollowedUser = await User.findByIdAndUpdate(
       followedObjectId,
       { $addToSet: { followers: userObjectId } },
@@ -132,17 +127,15 @@ exports.followUser = async (req, res) => {
 // Function to unfollow user in DB
 const updateUserBeingUnfollowed = async ({ unfollowedId, userId }) => {
   try {
-    // Remove unfollowedId from the user's following list
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { $pull: { following: unfollowedId } }, // Remove unfollowedId from following array
+      { $pull: { following: unfollowedId } },
       { new: true }
     );
 
-    // Remove userId from the unfollowed user's followers list
     const updatedUnfollowedUser = await User.findByIdAndUpdate(
       unfollowedId,
-      { $pull: { followers: userId } }, // Remove userId from followers array
+      { $pull: { followers: userId } },
       { new: true }
     );
 
@@ -194,21 +187,16 @@ const updateUserDetails = async (userId, updatedData) => {
 exports.updateUser = async (req, res) => {
   const userId = req.params.userId;
   const { updatedData } = req.body;
-  
+
   try {
     const updatedUser = await updateUserDetails(userId, updatedData);
 
     if (updatedUser) {
-      res
-      .status(200)
-      .json({ message: "Updated user details", updatedUser })
+      res.status(200).json({ message: "Updated user details", updatedUser });
     } else {
-      res
-      .status(400)
-      .json({ message: "Failed to update user details" })
+      res.status(400).json({ message: "Failed to update user details" });
     }
-
   } catch (error) {
-    res.status(500).json({ error: "Failed to update user details." })
+    res.status(500).json({ error: "Failed to update user details." });
   }
-}
+};

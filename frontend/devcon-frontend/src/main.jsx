@@ -7,7 +7,6 @@ import store, { persistor } from './app/store.js'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import routes from './routes.jsx'
 
-// Routes and elements for the router
 const router = createBrowserRouter(routes)
 
 createRoot(document.getElementById('root')).render(

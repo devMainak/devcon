@@ -147,7 +147,6 @@ exports.likePost = async (req, res) => {
 // Function to dislike a post
 const dislikeAPost = async (postId, dislikedUserId) => {
   try {
-    // Using $pull to remove the user from the likes array
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
       { $pull: { likes: dislikedUserId } },

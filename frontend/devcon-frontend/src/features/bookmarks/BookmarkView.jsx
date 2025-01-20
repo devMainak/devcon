@@ -4,20 +4,18 @@ import { fetchBookmarkAsync } from "./bookmarksSlice";
 import BookmarkList from "./BookmarkList";
 
 const BookmarkView = () => {
-  // Configuring useDispatch for usage
   const dispatch = useDispatch();
 
-  // Loading bookmarks on on page load
   useEffect(() => {
     dispatch(fetchBookmarkAsync());
   }, []);
 
-  // Accessing posts & user
   const { bookmarks, status, error } = useSelector((state) => state.bookmarks);
   const { user } = useSelector((state) => state.auth);
 
-  // Filtering user bookmarks
-  const userBookmarks = bookmarks.filter((post) => post.bookmarks.includes(user._id));
+  const userBookmarks = bookmarks.filter((post) =>
+    post.bookmarks.includes(user._id)
+  );
 
   return (
     <div>

@@ -2,7 +2,6 @@
 
 const mongoose = require("mongoose");
 
-// Defining Posts mongoose schema
 const postSchema = new mongoose.Schema(
   {
     author: {
@@ -24,8 +23,7 @@ const postSchema = new mongoose.Schema(
         },
         type: {
           type: String,
-          // Media types supported
-          enum: ["image", "video", "audio"],
+          enum: ["image", "video"],
           required: true,
         },
       },
@@ -46,8 +44,6 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Creating the model for post
 const Post = mongoose.model("posts", postSchema);
 
-// Exporting the Post model
 module.exports = Post;

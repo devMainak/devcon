@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Defining user schema
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -31,8 +30,6 @@ const userSchema = new mongoose.Schema({
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
 });
 
-// Creating the model
 const User = mongoose.model("users", userSchema);
 
-// Exporting the model
 module.exports = User;

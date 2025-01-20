@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import { logoutAsync } from "../../features/auth/authSlice";
 
 const SideNav = () => {
-  // Configuring use dispatch for usage
   const dispatch = useDispatch();
 
-  // User logout handler
   const handleUserLogout = async () => {
     try {
       const resultAction = await dispatch(logoutAsync());

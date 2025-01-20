@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
 
-// Accessing mongoDB string
 const mongoURI = process.env.MONGODB
 
-// Function for connecting database
 const initializeDatabase = async () => {
     try {
         const connection = await mongoose.connect(mongoURI)
@@ -17,5 +15,4 @@ const initializeDatabase = async () => {
     }
 }
 
-// Exporting the function
 module.exports = initializeDatabase

@@ -3,13 +3,11 @@ import { removeBookmarkAsync } from "./bookmarksSlice";
 import { unmarkAsBookmarked } from "../posts/postsSlice";
 
 const BookmarkList = ({ bookmarks }) => {
-  // Configuring useDispatch request
   const dispatch = useDispatch();
 
-  // Accessing user
   const { user } = useSelector((state) => state.auth);
   const userId = user._id;
-  // Function to remove bookmark
+
   const handleBookmarkRemove = async (postId) => {
     try {
       const resultAction = await dispatch(
@@ -23,15 +21,14 @@ const BookmarkList = ({ bookmarks }) => {
     }
   };
 
-  // Function to format date in the posts
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
-      month: "long", // Full month name
-      day: "numeric", // Numeric day
-      hour: "numeric", // Numeric hour
-      minute: "numeric", // Numeric minute
-      hour12: true, // 12-hour format
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
     });
   };
 

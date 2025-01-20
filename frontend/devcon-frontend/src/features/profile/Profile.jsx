@@ -1,34 +1,24 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { saveProfileData } from "../../components/user/staticUserSlice";
 import PostList from "../../components/post/PostList";
 import { updateUserProfileAsync } from "../users/usersSlice";
 import { updateUserDetails } from "../auth/authSlice";
 
 const Profile = () => {
-  // Configuring use dispatch
-  const dispatch = useDispatch();
-
-  // Accressing user and posts
   const { posts } = useSelector((state) => state.posts);
   const { user } = useSelector((state) => state.auth);
-  const { users } = useSelector((state) => state.users);
 
-  // Finding the current user
-  const currUser = users.find((person) => person._id === user._id);
-
-  // Local State bindings
   const [bio, setBio] = useState(user.profileBio ? user.profileBio : " ");
   const [avater, setAvater] = useState(user.userImageUrl);
   const [editMode, setEditMode] = useState(false);
   const [media, setMedia] = useState(null);
 
-  // Bindings for cloud file storage
-  const url = "https://api.cloudinary.com/v1_1/dase6jnks/upload";
-  const preset = "myCloud";
+  const dispatch = useDispatch();
 
-  // Handle files
+  const url = import.meta.env.VITE_CLOUDINARY_URL;
+  const preset = import.meta.env.VITE_UPLOAD_PRESET;
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -37,18 +27,10 @@ const Profile = () => {
     }
   };
 
-  // Creating a post
-  const handlePostubmit = async (e) => {
-    e.preventDefault();
-    setPostButton("Posting");
-  };
-
-  // Function to enable edit move
   const handleEnableEditMode = () => {
     setEditMode(true);
   };
 
-  // Handle edit profile
   const handleEditProfile = async () => {
     const formData = new FormData();
     formData.append("file", media);
@@ -99,13 +81,11 @@ const Profile = () => {
     setEditMode(false);
   };
 
-  // Total posts
   const totalPosts = posts.reduce((acc, curr) => {
     if (curr.author._id === user._id) acc++;
     return acc;
   }, 0);
 
-  // User posts
   const userPosts = posts.filter((post) => post.author._id === user._id);
 
   return (
