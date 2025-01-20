@@ -10,7 +10,18 @@ const app = express();
 
 // cors config
 const corsOptions = {
-  origin: 'https://devconweb.vercel.app',
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "https://devconweb.vercel.app",
+      "http://localhost:5173",
+    ];
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 };
 
