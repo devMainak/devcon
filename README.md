@@ -46,21 +46,19 @@ A modern, full-stack social media platform where users can connect, share posts,
 ## 🌟 Screenshots
 
 ### **Signup**
-![Signup Page](./public/signup.png)
+![Signup Page](./frontend/devcon-frontend/public/signup.png)
 
 ### **Home Feed**
-![Home Feed](./public/feed.png)
+![Home Feed](./frontend/devcon-frontend/public/feed.png)
 
 ### **User Profile**
-![User Profile](./public/profile.png)
+![User Profile](./frontend/devcon-frontend/public/profile.png)
 
 ### **Bookmarks**
-![User Bookmarks](./public/bookmarks.png)
+![User Bookmarks](./frontend/devcon-frontend/public/bookmarks.png)
 
 ### **Create Post**
-![Create Post](./public/createpost.png)
-
-*(Replace `#` with actual screenshot links.)*
+![Create Post](./frontend/devcon-frontend/public/createpost.png)
 
 ---
 
