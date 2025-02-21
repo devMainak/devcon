@@ -1,63 +1,55 @@
 import axios from "axios";
-import { refreshTokenAsync, logoutAsync } from "../features/auth/authSlice";
+import store from "../app/store";
+import { loginAsync, logoutAsync, refreshTokenAsync } from "../features/auth/authSlice";
 
-const createApiClient = (token, dispatch) => {
-  // Create an Axios instance
-  const apiClient = axios.create({
-    baseURL: "https://devcon-swart.vercel.app",
-    withCredentials: true,
-  });
+const apiClient = axios.create({
+  baseURL: "https://devcon-swart.vercel.app",
+  withCredentials: true,
+});
 
-  // Request Interceptor to add Authorization header
-  apiClient.interceptors.request.use(
-    (config) => {
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-
-  // Response Interceptor to handle expired tokens
-  apiClient.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-
-      // Check if the error is due to an expired token and retry hasn't been done
-      if (
-        error.response?.status === 401 &&
-        error.response?.data?.message === "TokenExpiredError" &&
-        !originalRequest._retry
-      ) {
-        originalRequest._retry = true; // Prevent infinite loops
-
-        try {
-          // Attempt to refresh the token
-          const { payload } = await dispatch(refreshTokenAsync()).unwrap();
-
-          // Update the authorization header with the new token
-          apiClient.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${payload.token}`;
-          originalRequest.headers["Authorization"] = `Bearer ${payload.token}`;
-
-          // Retry the original request with the new token
-          return apiClient(originalRequest);
-        } catch (refreshError) {
-          // Refresh token failed, logout user
-          dispatch(logoutAsync());
-          return Promise.reject(refreshError);
-        }
-      }
-
-      // Handle other errors
-      return Promise.reject(error);
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = store.getState().auth.token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  );
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-  return apiClient;
-};
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-export default createApiClient;
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.message === "TokenExpiredError" &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+      try {
+        const { payload } = await store.dispatch(refreshTokenAsync()).unwrap();
+        apiClient.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${payload.token}`;
+        originalRequest.headers["Authorization"] = `Bearer ${payload.token}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        store.dispatch(logoutAsync());
+        return Promise.reject(refreshError);
+      }
+    }
+
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      store.dispatch(logout());
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default apiClient;

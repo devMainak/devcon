@@ -71,7 +71,6 @@ const Profile = () => {
             setEditMode(false);
           }
         } else {
-          console.log("Nope!");
           setEditMode(false);
         }
       }
@@ -186,7 +185,7 @@ const Profile = () => {
             style={{ width: "20vw", minWidth: "15vw", margin: "auto" }}
           >
             <div className="card-body">
-              <div className="d-flex justify-content-evenly">
+              <div className="d-flex justify-content-evenly flex-wrap">
                 <div className="text-center fs-5 fw-semibold">
                   <div>{totalPosts}</div>
                   <div className="text-primary">Posts</div>

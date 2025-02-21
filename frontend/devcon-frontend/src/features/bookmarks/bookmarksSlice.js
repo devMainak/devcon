@@ -1,13 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import createApiClient from "../../utils/apiClient";
+import apiClient from "../../utils/apiClient";
 
 export const fetchBookmarkAsync = createAsyncThunk(
   "fetch/bookmarks",
-  async (_, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.get("/posts");
       return response.data;
@@ -22,11 +18,7 @@ export const fetchBookmarkAsync = createAsyncThunk(
 
 export const addBookmarkAsync = createAsyncThunk(
   "add/bookmark",
-  async ({ postId, userId }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ postId, userId }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/bookmarks/create/${postId}`, {
         userId,
@@ -43,11 +35,7 @@ export const addBookmarkAsync = createAsyncThunk(
 
 export const removeBookmarkAsync = createAsyncThunk(
   "remove/bookmark",
-  async ({ postId, userId }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ postId, userId }, { rejectWithValue }) => {
     try {
       const response = await apiClient.delete(`/bookmarks/delete/${postId}`, {
         data: { userId },

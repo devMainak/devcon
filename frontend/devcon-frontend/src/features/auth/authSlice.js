@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import createApiClient from "../../utils/apiClient";
+import apiClient from "../../utils/apiClient";
 
 export const loginAsync = createAsyncThunk(
   "auth/login",
@@ -51,11 +51,7 @@ export const refreshTokenAsync = createAsyncThunk(
 
 export const logoutAsync = createAsyncThunk(
   "auth/logout",
-  async (_, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(
         "/auth/logout",

@@ -1,12 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import createApiClient from "../../utils/apiClient";
+import apiClient from "../../utils/apiClient";
 
 export const fetchUsersAsync = createAsyncThunk(
   "fetch/users",
-  async (_, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
+  async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.get("/users");
       return response.data;
@@ -21,14 +18,7 @@ export const fetchUsersAsync = createAsyncThunk(
 
 export const followUserAsync = createAsyncThunk(
   "follow/user",
-  async (
-    { userId, followedUserId },
-    { getState, dispatch, rejectWithValue }
-  ) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ userId, followedUserId }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/users/follow/${followedUserId}`, {
         userId,
@@ -45,14 +35,7 @@ export const followUserAsync = createAsyncThunk(
 
 export const unfollowUserAsync = createAsyncThunk(
   "unfollow/user",
-  async (
-    { userId, unfollowedUserId },
-    { getState, dispatch, rejectWithValue }
-  ) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ userId, unfollowedUserId }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(
         `/users/unfollow/${unfollowedUserId}`,
@@ -70,11 +53,7 @@ export const unfollowUserAsync = createAsyncThunk(
 
 export const updateUserProfileAsync = createAsyncThunk(
   "update/user",
-  async ({ userId, updatedData }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ userId, updatedData }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/users/update/${userId}`, {
         updatedData,

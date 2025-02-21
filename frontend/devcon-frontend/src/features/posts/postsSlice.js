@@ -1,13 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import createApiClient from "../../utils/apiClient";
+import apiClient from "../../utils/apiClient";
 
 export const fetchPostsAsync = createAsyncThunk(
   "fetch/posts",
-  async (_, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.get("/posts");
       return response.data;
@@ -22,10 +18,7 @@ export const fetchPostsAsync = createAsyncThunk(
 
 export const addPostAsync = createAsyncThunk(
   "add/post",
-  async (post, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
+  async (post, { rejectWithValue }) => {
     try {
       const response = await apiClient.post("/posts/create", post);
       return response.data;
@@ -40,10 +33,7 @@ export const addPostAsync = createAsyncThunk(
 
 export const updatePostAsync = createAsyncThunk(
   "update/post",
-  async ({ postId, post }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
+  async ({ postId, post }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/posts/edit/${postId}`, post);
       return response.data;
@@ -58,11 +48,7 @@ export const updatePostAsync = createAsyncThunk(
 
 export const likePostAsync = createAsyncThunk(
   "like/post",
-  async ({ postId, user }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ postId, user }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/posts/like/${postId}`, {
         likedUserId: user._id,
@@ -79,11 +65,7 @@ export const likePostAsync = createAsyncThunk(
 
 export const dislikePostAsync = createAsyncThunk(
   "dislike/post",
-  async ({ postId, user }, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
-
+  async ({ postId, user }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/posts/dislike/${postId}`, {
         dislikedUserId: user._id,
@@ -100,10 +82,7 @@ export const dislikePostAsync = createAsyncThunk(
 
 export const deletePostAsync = createAsyncThunk(
   "delete/post",
-  async (postId, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const token = state.auth.token;
-    const apiClient = createApiClient(token, dispatch);
+  async (postId, { rejectWithValue }) => {
     try {
       const response = await apiClient.delete(`/posts/delete/${postId}`);
       return response.data;
