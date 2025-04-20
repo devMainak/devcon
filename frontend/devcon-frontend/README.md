@@ -1,4 +1,4 @@
-# 🌟 Social Media Platform
+# 🌟 Devcon
 
 A modern, full-stack social media platform where users can connect, share posts, follow others, and interact with a dynamic online community. Built with cutting-edge technologies for a seamless user experience.
 
@@ -68,5 +68,5 @@ Ensure the following are installed:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/social-media-platform.git
-   cd social-media-platform
+   git clone https://github.com/devMainak/devcon.git
+   cd devcon

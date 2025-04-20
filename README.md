@@ -1,4 +1,4 @@
-# 🌟 Social Media Platform
+# Devcon🌟 Social Media Platform
 
 A modern, full-stack social media platform where users can connect, share posts, follow others, and interact with a dynamic online community. Built with cutting-edge technologies for a seamless user experience.
 
@@ -8,11 +8,11 @@ A modern, full-stack social media platform where users can connect, share posts,
 
 ### 🖥️ **Frontend**
 - 🏠 **Home Feed**: View posts from users you follow.
-- 📝 **Create Posts**: Share your thoughts, images, or links.
-- 💬 **Likes & Comments**: Engage with posts in real time.
+- 📝 **Create Posts & Edit Posts**: Share your thoughts, images, or Videos.
+- 💬 **Likes & Bookmark**: Engage with posts in real time.
 - 🧑‍🤝‍🧑 **Follow/Unfollow Users**: Build your social circle.
 - 🔒 **Authentication**: Secure signup/login/logout functionality.
-- 📱 **Responsive Design**: Optimized for all devices.
+- 📱 **Responsive Design**: Optimized for Desktop and Tab devices.
 
 ### 🛠️ **Backend**
 - 🔑 **Authentication**: Secure JWT-based user authentication.
@@ -26,8 +26,9 @@ A modern, full-stack social media platform where users can connect, share posts,
 
 ### **Frontend:**
 - **React.js**: For dynamic and interactive user interfaces.
+- **React-Router**: For client-side routing.
 - **Redux**: For robust state management.
-- **CSS/SCSS**: For sleek and responsive styling.
+- **CSS/SCSS/Bootstrap**: For sleek and responsive styling.
 
 ### **Backend:**
 - **Node.js**: For scalable server-side logic.
@@ -38,22 +39,26 @@ A modern, full-stack social media platform where users can connect, share posts,
 ### **Other Tools:**
 - **JWT**: For secure user authentication.
 - **Axios**: For API calls.
-- **Cloudinary**: For image hosting (optional).
+- **Cloudinary**: For image hosting.
 
 ---
 
-<!-- ## 🌟 Screenshots
+## 🌟 Screenshots
+
+### **Signup**
+![Signup Page](./frontend/devcon-frontend/public/signup.png)
 
 ### **Home Feed**
-![Home Feed](#)
+![Home Feed](./frontend/devcon-frontend/public/feed.png)
 
 ### **User Profile**
-![User Profile](#)
+![User Profile](./frontend/devcon-frontend/public/profile.png)
+
+### **Bookmarks**
+![User Bookmarks](./frontend/devcon-frontend/public/bookmarks.png)
 
 ### **Create Post**
-![Create Post](#)
-
-*(Replace `#` with actual screenshot links.)* -->
+![Create Post](./frontend/devcon-frontend/public/createpost.png)
 
 ---
 
@@ -68,5 +73,5 @@ Ensure the following are installed:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/social-media-platform.git
-   cd social-media-platform
+   git clone https://github.com/devMainak/devcon.git
+   cd devcon
