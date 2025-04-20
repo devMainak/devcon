@@ -46,6 +46,11 @@ const SideNav = () => {
           </Link>
         </div>
         <div className="fs-5 pb-4">
+          <Link to={`people`} style={{ textDecoration: "none" }}>
+            <i class="fa-solid fa-users"></i> People
+          </Link>
+        </div>
+        <div className="fs-5 pb-4">
           <Link to={`profile`} style={{ textDecoration: "none" }}>
             <i className="fa-sharp fa-solid fa-user"></i> Profile
           </Link>

@@ -8,6 +8,7 @@ import Login from "./features/login/Login";
 import Register from "./features/register/Register";
 import AuthLayout from "./components/auth/AuthLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import UserList from "./components/user/UserList";
 
 const routes = [
   // Public Routes
@@ -45,6 +46,10 @@ const routes = [
       {
         path: "explore",
         element: <ExploreFeed />,
+      },
+      {
+        path: "people",
+        element: <UserList />,
       },
       {
         path: "bookmarks",

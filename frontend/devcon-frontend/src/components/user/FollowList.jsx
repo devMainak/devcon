@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   fetchUsersAsync,
   followUserAsync,
@@ -20,7 +21,9 @@ const FollowList = () => {
   const { users } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
 
-  const filteredUsers = users.filter((currUser) => currUser._id !== user._id);
+  const filteredUsers = users
+    .filter((currUser) => currUser._id !== user._id)
+    .slice(0, 5);
 
   const handleFollowUser = async (followedUser) => {
     const userId = user._id;
@@ -55,7 +58,11 @@ const FollowList = () => {
         <div className="card-body">
           <div className="d-flex justify-content-between mb-3">
             <div className="fs-5 fw-semibold">Find Devs</div>
-            <div className="fs-5 text-primary">Show more</div>
+            <div className="fs-5 text-primary">
+              <Link style={{ textDecoration: "none" }} to="people">
+                Show more
+              </Link>
+            </div>
           </div>
           {filteredUsers.map((currUser) => (
             <div
