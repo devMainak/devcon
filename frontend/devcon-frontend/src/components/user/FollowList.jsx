@@ -1,18 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  fetchUsersAsync,
-  followUserAsync,
-  unfollowUserAsync,
-} from "../../features/users/usersSlice";
-import {
-  addNewFollower,
-  removeExistingFollower,
-} from "../../features/auth/authSlice";
+import { fetchUsersAsync } from "../../features/users/usersSlice";
+import { useFollower } from "../../hooks/useFollower";
 
 const FollowList = () => {
   const dispatch = useDispatch();
+  const { handleFollowUser } = useFollower();
 
   useEffect(() => {
     dispatch(fetchUsersAsync());
@@ -24,33 +18,6 @@ const FollowList = () => {
   const filteredUsers = users
     .filter((currUser) => currUser._id !== user._id)
     .slice(0, 5);
-
-  const handleFollowUser = async (followedUser) => {
-    const userId = user._id;
-    const followedUserId = followedUser._id;
-
-    try {
-      if (!user.following.includes(followedUserId)) {
-        const resultAction = await dispatch(
-          followUserAsync({ userId, followedUserId })
-        );
-        if (followUserAsync.fulfilled.match(resultAction)) {
-          dispatch(addNewFollower({ followedUserId }));
-        }
-      } else {
-        const resultAction = await dispatch(
-          unfollowUserAsync({ userId, unfollowedUserId: followedUserId })
-        );
-        if (unfollowUserAsync.fulfilled.match(resultAction)) {
-          dispatch(
-            removeExistingFollower({ unfollowedUserId: followedUserId })
-          );
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div>
@@ -65,35 +32,45 @@ const FollowList = () => {
             </div>
           </div>
           {filteredUsers.map((currUser) => (
-            <div
-              className="d-flex justify-content-between mt-2"
-              style={{ flexWrap: "wrap" }}
-              key={currUser._id}
-            >
-              <div className="d-flex" style={{ flexWrap: "wrap", gap: "1rem" }}>
-                <img
-                  src={currUser.userImageUrl}
-                  style={{
-                    height: "40px",
-                    width: "40px",
-                    borderRadius: "50%",
-                  }}
-                />
-                <div className="fs-5">
-                  {currUser.name} <br />{" "}
-                  <span className="fs-6 fw-semibold text-primary">{`@${currUser.username}`}</span>{" "}
-                </div>
-              </div>
-              <div style={{ alignSelf: "end" }}>
-                <button
-                  onClick={() => handleFollowUser(currUser)}
-                  className="btn btn-primary my-2"
+            <div>
+              <div
+                className="d-flex justify-content-between mt-2"
+                style={{ flexWrap: "wrap" }}
+                key={currUser._id}
+              >
+                <Link
+                  to={`/user/profile/${currUser._id}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  {" "}
-                  {user.following.includes(currUser._id)
-                    ? "Unfollow"
-                    : "+ Follow"}
-                </button>
+                  <div
+                    className="d-flex"
+                    style={{ flexWrap: "wrap", gap: "1rem" }}
+                  >
+                    <img
+                      src={currUser.userImageUrl}
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                    <div className="fs-5 text-dark">
+                      {currUser.name} <br />{" "}
+                      <span className="fs-6 fw-semibold text-primary">{`@${currUser.username}`}</span>{" "}
+                    </div>
+                  </div>
+                </Link>
+                <div style={{ alignSelf: "end" }}>
+                  <button
+                    onClick={() => handleFollowUser(currUser)}
+                    className="btn btn-primary my-2"
+                  >
+                    {" "}
+                    {user.following.includes(currUser._id)
+                      ? "Unfollow"
+                      : "+ Follow"}
+                  </button>
+                </div>
               </div>
             </div>
           ))}

@@ -56,7 +56,7 @@ const routes = [
         element: <BookmarkView />,
       },
       {
-        path: "profile",
+        path: "profile/:userId?",
         element: <Profile />,
       },
       {

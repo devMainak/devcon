@@ -232,7 +232,10 @@ const Profile = () => {
 
       {/* POSTS SECTION */}
       <div className="fs-3 fw-bold my-3">
-        {profileUser ? profileUser.name : "Your"} Posts
+        {profileUser &&
+          profileUser.followers.includes(user._id) &&
+          `${profileUser.name} Posts`}
+        {!profileUser && "Your Posts"}
       </div>
       <div>
         {profileUser ? (
