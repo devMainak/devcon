@@ -54,7 +54,7 @@ const FollowList = () => {
                         borderRadius: "50%",
                       }}
                     />
-                    <div className="fs-5 text-dark">
+                    <div className="fs-6 text-dark">
                       {currUser.name} <br />{" "}
                       <span className="fs-6 fw-semibold text-primary">{`@${currUser.username}`}</span>{" "}
                     </div>
@@ -63,7 +63,7 @@ const FollowList = () => {
                 <div style={{ alignSelf: "end" }}>
                   <button
                     onClick={() => handleFollowUser(currUser)}
-                    className="btn btn-primary my-2"
+                    className="btn btn-sm btn-primary my-2"
                   >
                     {" "}
                     {user.following.includes(currUser._id)
